@@ -29,10 +29,11 @@ public class DmaiClient {
 
 		try {
 
-			socket = new Socket("10.242.142.168", 4456); // Serveur : Poste de
-															// Yossi
+			// socket = new Socket("10.242.142.168", 4456); // Serveur : Poste
+			// de Yossi
 			// socket = new Socket("10.242.142.1", 4456); // Serveur : Poste de
 			// Pascal
+			socket = new Socket("192.168.0.21.", 4456);
 			logger.info("Connexion au socket serveur.");
 			MainView mvView;
 			mvView = new MainView();
@@ -44,7 +45,8 @@ public class DmaiClient {
 			t2.start();
 
 		} catch (ConnectException e) {
-			JOptionPane.showMessageDialog(new Frame(), "Le serveur Draw Me An Idea n'est pas lancé", "Erreur", 1);
+			JOptionPane.showMessageDialog(new Frame(),
+					"Le serveur Draw Me An Idea n'est pas lancï¿½", "Erreur", 1);
 			System.exit(0);
 		} catch (UnknownHostException e) {
 

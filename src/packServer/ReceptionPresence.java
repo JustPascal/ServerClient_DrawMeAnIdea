@@ -29,18 +29,19 @@ public class ReceptionPresence implements Runnable {
 		// ipClients = new ArrayList<InetAddress>();
 		try {
 			while (true) {
-				objectReceptionList = new ObjectInputStream(socket.getInputStream());
+				objectReceptionList = new ObjectInputStream(
+						socket.getInputStream());
 				clientAddress = (InetAddress) objectReceptionList.readObject();
 
 				if (!accepterClients.getIpClients().contains(clientAddress)) {
 					accepterClients.getIpClients().add(clientAddress);
 				}
-				System.out.println(accepterClients.getIpClients());
+				// System.out.println(accepterClients.getIpClients());
 
 				envoilist(accepterClients.getIpClients());
 			}
 		} catch (SocketException e) {
-			System.out.println("le client s'est deconnecté");
+			System.out.println("le client s'est deconnectÃ©");
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -61,7 +62,7 @@ public class ReceptionPresence implements Runnable {
 				outObjectList.flush();
 			}
 		} catch (SocketException e) {
-			System.out.println("un client s'est deconnecté");
+			System.out.println("un client s'est deconnectï¿½");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

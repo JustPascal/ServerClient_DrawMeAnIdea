@@ -14,6 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -47,6 +48,10 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 	JMenu edition = new JMenu("Edition");
 
+	JMenu checkForUsers = new JMenu("Check Users");
+
+	JMenuItem checkUsers = new JMenuItem("recent users");
+
 	JMenu inviter = new JMenu("Utilisateurs disponible");
 
 	JMenu forme = new JMenu("Forme du pointeur");
@@ -67,7 +72,7 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 	JMenuItem rond = new JMenuItem("Rond");
 
-	static JMenuItem carre = new JMenuItem("Carré");
+	static JMenuItem carre = new JMenuItem("Carrï¿½");
 
 	static JMenuItem bleu = new JMenuItem("Bleu");
 
@@ -93,7 +98,7 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 	private boolean isLaunched;
 
-	public List<InetAddress> ipClients = null;
+	public List<InetAddress> ipClients = new ArrayList<InetAddress>();
 
 	public ServerSocket socketReception = null;
 	public JButton bouton2 = new JButton("Attendre une Invitation");
@@ -138,7 +143,8 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 			}
 		});
 
-		nouveau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
+		nouveau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+				KeyEvent.CTRL_DOWN_MASK));
 
 		quitter.addActionListener(new ActionListener() {
 			@Override
@@ -146,7 +152,8 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 				System.exit(0);
 			}
 		});
-		quitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK));
+		quitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
+				KeyEvent.CTRL_DOWN_MASK));
 
 		fichier.add(nouveau);
 		fichier.addSeparator();
@@ -186,7 +193,7 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 				mcController.switchCouleur(e);
 			}
 		});
-
+		inviter.setEnabled(false);
 		inviter.addMenuListener(new MenuListener() {
 
 			@Override
@@ -197,37 +204,40 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 					InetAddress thisIp = InetAddress.getLocalHost();
 					System.out.println(thisIp);
 
-					if (ipClients.size() != 0) {
-						for (final InetAddress ipInvite : ipClients) {
+					inviter.setEnabled(true);
+					for (final InetAddress ipInvite : ipClients) {
 
-							if (!thisIp.equals(ipInvite)) {
+						if (!thisIp.equals(ipInvite)) {
 
-								final JButton button = new JButton("adresse n° " + ipInvite.toString());
-								button.addActionListener(new ActionListener() {
-									@Override
-									public void actionPerformed(ActionEvent e) {
+							final JButton button = new JButton("adresse : "
+									+ ipInvite.toString());
+							button.addActionListener(new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
 
-										boolean b = getDrawPanel().setIpRecepteur(ipInvite);
-										System.out.println(b);
-										if (b == false) {
-											JOptionPane.showMessageDialog(new Frame(), "Cet utilisateur n'attend pas d'invitation");
-										} else {
-											JOptionPane.showMessageDialog(new Frame(), "Connexion réussie");
-											// menuBar.remove(inviter);
+									boolean b = getDrawPanel().setIpRecepteur(
+											ipInvite);
+									System.out.println(b);
+									if (b == false) {
+										JOptionPane
+												.showMessageDialog(new Frame(),
+														"Cet utilisateur n'attend pas d'invitation");
+									} else {
+										JOptionPane.showMessageDialog(
+												new Frame(),
+												"Connexion rÃ©ussie");
+										// menuBar.remove(inviter);
 
-											inviter.setEnabled(false);
-											bouton2.setEnabled(false);
+										inviter.setEnabled(false);
+										bouton2.setEnabled(false);
 
-											getDrawPanel().setRecepteur(false);
-										}
+										getDrawPanel().setRecepteur(false);
 									}
-								});
-								inviter.add(button);
-							}
-
+								}
+							});
+							inviter.add(button);
 						}
-					} else {
-						System.out.println("liste vide");
+
 					}
 
 				} catch (UnknownHostException e2) {
@@ -261,17 +271,22 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 					socketReception = new ServerSocket(4184, 1, thisIp);
 
-					int input = JOptionPane.showOptionDialog(null,
-							"L'attente d'une invitation est en cours.\nOk : Pour valider.\nCancel : Pour annuler.",
-							"Attente d'une invitation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+					int input = JOptionPane
+							.showOptionDialog(
+									null,
+									"L'attente d'une invitation est en cours.\nOk : Pour valider.\nCancel : Pour annuler.",
+									"Attente d'une invitation",
+									JOptionPane.OK_CANCEL_OPTION,
+									JOptionPane.INFORMATION_MESSAGE, null,
+									null, null);
 					if (input == JOptionPane.CANCEL_OPTION) {
 						socketReception.close();
 					}
 
-					@SuppressWarnings("resource")
 					Socket socketR = new Socket();
 					socketR = socketReception.accept();
-					JOptionPane.showMessageDialog(new Frame(), "Connexion réussie");
+					JOptionPane.showMessageDialog(new Frame(),
+							"Connexion rÃ©ussie");
 
 					inviter.setEnabled(false);
 					bouton2.setEnabled(false);
@@ -279,10 +294,11 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 					edition.setEnabled(false);
 					nouveau.setEnabled(false);
 
-					Reception rrReception = new Reception(MainView.this, socketR);
+					Reception rrReception = new Reception(MainView.this,
+							socketR);
 					new Thread(rrReception).start();
 				} catch (SocketException e1) {
-					System.out.println("le ServerSocket est refermé");
+					System.out.println("le ServerSocket est refermï¿½");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -300,7 +316,12 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 		edition.addSeparator();
 		edition.add(couleur);
 
+		/* check users */
+		checkUsers.addActionListener(this);
+		checkForUsers.add(checkUsers);
+		/* */
 		menuBar.add(fichier);
+		menuBar.add(checkForUsers);
 		menuBar.add(edition);
 		menuBar.add(inviter);
 
@@ -428,6 +449,14 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 		if (e.getSource().equals(chargerPlugin)) {
 			// JOptionPane.showMessageDialog(this, "Charger Plugin");
 			new PluginLoader(this);
+		}
+
+		if (e.getSource().equals(checkUsers)) {
+			if (ipClients.size() == 1) {
+				inviter.setEnabled(false);
+			} else {
+				inviter.setEnabled(true);
+			}
 		}
 	}
 
