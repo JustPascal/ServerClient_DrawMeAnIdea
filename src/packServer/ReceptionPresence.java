@@ -44,10 +44,8 @@ public class ReceptionPresence implements Runnable {
 			System.out.println("le client s'est deconnecté");
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -64,7 +62,6 @@ public class ReceptionPresence implements Runnable {
 		} catch (SocketException e) {
 			System.out.println("un client s'est deconnect�");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

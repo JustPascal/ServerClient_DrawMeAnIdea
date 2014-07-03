@@ -31,6 +31,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import com.pluginloader.PluginLoader;
+import com.saveimage.SaveImage;
 
 public class MainView extends JFrame implements WindowListener, ActionListener {
 
@@ -50,8 +51,6 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 	JMenu checkForUsers = new JMenu("Check Users");
 
-	JMenuItem checkUsers = new JMenuItem("recent users");
-
 	JMenu inviter = new JMenu("Utilisateurs disponible");
 
 	JMenu forme = new JMenu("Forme du pointeur");
@@ -68,7 +67,11 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 	JMenuItem nouveau = new JMenuItem("Effacer");
 
+	JMenuItem sauvegarde = new JMenuItem("Save");
+
 	JMenuItem quitter = new JMenuItem("Quitter");
+
+	JMenuItem checkUsers = new JMenuItem("recent users");
 
 	JMenuItem rond = new JMenuItem("Rond");
 
@@ -155,7 +158,10 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 		quitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
 				KeyEvent.CTRL_DOWN_MASK));
 
+		sauvegarde.addActionListener(this);
 		fichier.add(nouveau);
+		fichier.addSeparator();
+		fichier.add(sauvegarde);
 		fichier.addSeparator();
 		fichier.add(quitter);
 		fichier.setMnemonic('F');
@@ -293,6 +299,7 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 					plugin.setEnabled(false);
 					edition.setEnabled(false);
 					nouveau.setEnabled(false);
+					checkForUsers.setEnabled(false);
 
 					Reception rrReception = new Reception(MainView.this,
 							socketR);
@@ -300,7 +307,6 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 				} catch (SocketException e1) {
 					System.out.println("le ServerSocket est referm�");
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
@@ -392,13 +398,11 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -409,25 +413,21 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 	@Override
 	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -447,7 +447,6 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource().equals(chargerPlugin)) {
-			// JOptionPane.showMessageDialog(this, "Charger Plugin");
 			new PluginLoader(this);
 		}
 
@@ -458,6 +457,12 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 				inviter.setEnabled(true);
 			}
 		}
+		
+		if(e.getSource().equals(sauvegarde)){
+			SaveImage saveImage = new SaveImage(this);
+			saveImage.save();
+		}
+			
 	}
 
 }

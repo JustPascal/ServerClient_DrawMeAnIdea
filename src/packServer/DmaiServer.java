@@ -15,13 +15,13 @@ public class DmaiServer {
 
 			System.out.println("Lancement du serveur..");
 			ss = new ServerSocket(4456, 5, thisIp);
-			System.out.println("Le serveur est à l'ecoute du port " + ss.getLocalPort());
+			System.out.println("Le serveur est à l'ecoute du port "
+					+ ss.getLocalPort());
 
 			Thread t = new Thread(new AccepterClients(ss));
 			t.start();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
