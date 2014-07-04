@@ -11,14 +11,12 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -27,11 +25,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import com.aboutframe.AboutFrame;
 import com.pluginloader.PluginLoader;
@@ -235,7 +230,6 @@ public class MainView extends JFrame implements ActionListener {
 							final JButton button = new JButton("adresse : "
 									+ ipInvite.toString());
 							button.addActionListener(new ActionListener() {
-								@SuppressWarnings("deprecation")
 								@Override
 								public void actionPerformed(ActionEvent e) {
 
@@ -408,7 +402,8 @@ public class MainView extends JFrame implements ActionListener {
 				} else {
 					disableMenusandItems();
 
-					Reception rrReception = new Reception(this,socketReception.accept());
+					Reception rrReception = new Reception(this,
+							socketReception.accept());
 					Thread treception = new Thread(rrReception);
 					treception.start();
 					JOptionPane.showMessageDialog(null, "Connexion réussie");
