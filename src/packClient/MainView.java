@@ -33,7 +33,7 @@ import com.pluginloader.PluginLoader;
 import com.tools.MainViewWindowListener;
 import com.tools.SaveImage;
 
-public class MainView extends JFrame implements ActionListener {
+public class MainView extends JFrame implements ActionListener, MenuListener {
 
 	/**
 	 * 
@@ -212,67 +212,7 @@ public class MainView extends JFrame implements ActionListener {
 		/* Menu Utilisateurs disponibles */
 
 		inviter.setEnabled(false);
-		inviter.addMenuListener(new MenuListener() {
-
-			@Override
-			public void menuSelected(MenuEvent e) {
-				inviter.removeAll();
-
-				try {
-					InetAddress thisIp = InetAddress.getLocalHost();
-					System.out.println(thisIp);
-
-					inviter.setEnabled(true);
-					for (final InetAddress ipInvite : ipClients) {
-
-						if (!thisIp.equals(ipInvite)) {
-
-							final JButton button = new JButton("adresse : "
-									+ ipInvite.toString());
-							button.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-
-									boolean b = getDrawPanel().setIpRecepteur(
-											ipInvite);
-									System.out.println(b);
-									if (b == false) {
-										JOptionPane
-												.showMessageDialog(new Frame(),
-														"Cet utilisateur n'attend pas d'invitation");
-									} else {
-										JOptionPane.showMessageDialog(
-												new Frame(),
-												"Connexion réussie");
-										inviter.setEnabled(false);
-										invitation.setEnabled(false);
-
-										getDrawPanel().setRecepteur(false);
-									}
-								}
-							});
-							inviter.add(button);
-						}
-
-					}
-
-				} catch (UnknownHostException e2) {
-
-					e2.printStackTrace();
-				}
-
-			}
-
-			@Override
-			public void menuDeselected(MenuEvent e) {
-
-			}
-
-			@Override
-			public void menuCanceled(MenuEvent e) {
-
-			}
-		});
+		inviter.addMenuListener(this);
 
 		/* Menu Plugin */
 		chargerPlugin = new JMenuItem("Charger un Plugin");
@@ -459,5 +399,62 @@ public class MainView extends JFrame implements ActionListener {
 
 	public void disablePlugin() {
 		plugin.setEnabled(false);
+	}
+
+	@Override
+	public void menuCanceled(MenuEvent e) {
+
+	}
+
+	@Override
+	public void menuDeselected(MenuEvent e) {
+
+	}
+
+	@Override
+	public void menuSelected(MenuEvent e) {
+		inviter.removeAll();
+
+		try {
+			InetAddress thisIp = InetAddress.getLocalHost();
+			System.out.println(thisIp);
+
+			inviter.setEnabled(true);
+			for (final InetAddress ipInvite : ipClients) {
+
+				if (!thisIp.equals(ipInvite)) {
+
+					final JMenuItem utilisateur = new JMenuItem("adresse : "
+							+ ipInvite.toString());
+					utilisateur.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+
+							boolean b = getDrawPanel().setIpRecepteur(ipInvite);
+							System.out.println(b);
+							if (b == false) {
+								JOptionPane
+										.showMessageDialog(new Frame(),
+												"Cet utilisateur n'attend pas d'invitation");
+							} else {
+								JOptionPane.showMessageDialog(new Frame(),
+										"Connexion réussie");
+								inviter.setEnabled(false);
+								invitation.setEnabled(false);
+
+								getDrawPanel().setRecepteur(false);
+							}
+						}
+					});
+					inviter.add(utilisateur);
+				}
+
+			}
+
+		} catch (UnknownHostException e2) {
+
+			e2.printStackTrace();
+		}
+
 	}
 }

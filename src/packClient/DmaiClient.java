@@ -17,16 +17,6 @@ public class DmaiClient {
 
 	private static Logger logger = Logger.getLogger(DmaiClient.class.getName());
 
-	private ArrayList<InetAddress> ipClients;
-
-	public ArrayList<InetAddress> getIpClients() {
-		return ipClients;
-	}
-
-	public void setIpClients(ArrayList<InetAddress> ipClients) {
-		this.ipClients = ipClients;
-	}
-
 	public static void main(String[] args) {
 
 		try {
