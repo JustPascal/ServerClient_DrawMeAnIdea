@@ -2,7 +2,9 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -26,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -42,10 +45,11 @@ public class MainView extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	Logger logger = Logger.getLogger(MainView.class.getName());
+	private Logger logger = Logger.getLogger(MainView.class.getName());
 
-	// LE MENU
 	private final JMenuBar menuBar = new JMenuBar();
+
+	/* Menu */
 
 	private JMenu fichier = new JMenu("Fichier");
 
@@ -59,52 +63,53 @@ public class MainView extends JFrame implements ActionListener {
 
 	private JMenu couleur = new JMenu("Couleur du pointeur");
 
-	/* Menu et menu Item du plugin */
-
 	private JMenu plugin = new JMenu("Plugin");
-
-	JMenuItem chargerPlugin = new JMenuItem("Charger un Plugin");
-
-	/* -- -- -- */
-
-	JMenu help = new JMenu("?");
 
 	private JMenu invitation = new JMenu("Invitation");
 
-	JMenuItem aboutFrame = new JMenuItem("A propos de nous");
+	private JMenu help = new JMenu("?");
 
-	JMenuItem nouveau = new JMenuItem("Effacer");
+	/* Menu Items */
 
-	JMenuItem sauvegarde = new JMenuItem("Save");
+	private JMenuItem chargerPlugin;
 
-	JMenuItem quitter = new JMenuItem("Quitter");
+	private JMenuItem aboutFrame;
 
-	JMenuItem checkUsers = new JMenuItem("recent users");
+	private JMenuItem nouveau;
 
-	JMenuItem rond = new JMenuItem("Circle");
+	private JMenuItem sauvegarde;
 
-	static JMenuItem carre = new JMenuItem("Square");
+	private JMenuItem quitter;
 
-	static JMenuItem bleu = new JMenuItem("Blue");
+	private JMenuItem rond;
 
-	JMenuItem rouge = new JMenuItem("Red");
+	private JMenuItem carre;
 
-	static JMenuItem vert = new JMenuItem("Green");
+	private JMenuItem checkUsers;
 
-	// LA BARRE D'OUTILS
-	JToolBar toolBar = new JToolBar();
+	private JMenuItem bleu;
 
-	static JButton square = new JButton(new ImageIcon("src/carre.png"));
+	private JMenuItem rouge;
 
-	JButton circle = new JButton(new ImageIcon("src/rond.png"));
+	private JMenuItem vert;
 
-	JButton red = new JButton();
+	private JMenuItem attendre;
 
-	static JButton green = new JButton();
+	/* Tool Bar */
 
-	static JButton blue = new JButton();
+	private JToolBar toolBar = new JToolBar();
 
-	// Notre zone de dessin
+	private JButton square;
+
+	private JButton circle;
+
+	private JButton red;
+
+	private JButton green;
+
+	private JButton blue;
+
+	/* Zone de dessin */
 	public MainController mcController = null;
 
 	private boolean isLaunched;
@@ -112,8 +117,6 @@ public class MainView extends JFrame implements ActionListener {
 	public List<InetAddress> ipClients = new ArrayList<InetAddress>();
 
 	public ServerSocket socketReception = null;
-
-	private JMenuItem attendre = new JMenuItem("Attendre une Invitation");
 
 	public List<InetAddress> getIpClients() {
 		return ipClients;
@@ -128,58 +131,90 @@ public class MainView extends JFrame implements ActionListener {
 
 		logger.info("[BEGIN] MainView()");
 
-		try {
-			UIManager.setLookAndFeel(new MetalLookAndFeel());
-		} catch (Exception e) {
-			e.getMessage();
-		}
-		this.setSize(700, 500);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		// On initialise le menu
-		this.initMenu();
-		// Idem pour la barre d'outils
-		this.initToolBar();
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension d = tk.getScreenSize();
+		setSize(d.width / 2, d.height / 2);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		/* Initialisation Menu */
+		initMenu();
+		/* Initialisation Tool bar */
+		initToolBar();
 		// On positionne notre zone de dessin
-		this.getContentPane().add(getDrawPanel(), BorderLayout.CENTER);
-		this.setVisible(true);
-		/* WindowListenner */
+		getContentPane().add(getDrawPanel(), BorderLayout.CENTER);
 		MainViewWindowListener mainViewWindowListenner = new MainViewWindowListener(
 				this);
-		this.addWindowListener(mainViewWindowListenner);
-		/*				*/
+		addWindowListener(mainViewWindowListenner);
+		setVisible(true);
 		logger.info("[END] MainView()");
 	}
 
 	// Initialise le menu
 	private void initMenu() {
-		red.setBackground(Color.RED);
-		blue.setBackground(Color.BLUE);
-		green.setBackground(Color.GREEN);
-		nouveau.addActionListener(this);
+		/* Menu Fichier */
+		/* Nouveau */
+		nouveau = new JMenuItem("Effacer");
 		nouveau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
 				KeyEvent.CTRL_DOWN_MASK));
-
-		quitter.addActionListener(this);
+		nouveau.addActionListener(this);
+		/* Sauvegarde */
+		sauvegarde = new JMenuItem("Save");
+		sauvegarde.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				KeyEvent.CTRL_DOWN_MASK));
+		sauvegarde.addActionListener(this);
+		/* quitter */
+		quitter = new JMenuItem("Quitter");
 		quitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
 				KeyEvent.CTRL_DOWN_MASK));
-
-		sauvegarde.addActionListener(this);
+		quitter.addActionListener(this);
+		/* Ajout dans le menu fichier */
 		fichier.add(nouveau);
 		fichier.addSeparator();
 		fichier.add(sauvegarde);
 		fichier.addSeparator();
 		fichier.add(quitter);
 		fichier.setMnemonic('F');
+		/*---------------*/
 
-		carre.addActionListener(this);
+		/* Menu Edition */
+
+		/* Menu Item Forme */
+		rond = new JMenuItem("Circle");
 		rond.addActionListener(this);
+
+		carre = new JMenuItem("Square");
+		carre.addActionListener(this);
+		/* Ajout dans le menu Forme */
 		forme.add(rond);
 		forme.add(carre);
 
-		rouge.addActionListener(this);
-		vert.addActionListener(this);
+		/* Menu Item Couleur */
+		bleu = new JMenuItem("Blue");
 		bleu.addActionListener(this);
+
+		rouge = new JMenuItem("Red");
+		rouge.addActionListener(this);
+
+		vert = new JMenuItem("Green");
+		vert.addActionListener(this);
+		/* Ajout dans le menu Couleur */
+		couleur.add(rouge);
+		couleur.add(vert);
+		couleur.add(bleu);
+
+		/* Ajout dans Menu Edition */
+		edition.setMnemonic('E');
+		edition.add(forme);
+		edition.addSeparator();
+		edition.add(couleur);
+		/*---------------*/
+
+		/* Menu Check Users */
+		checkUsers = new JMenuItem("recent users");
+		checkUsers.addActionListener(this);
+		checkForUsers.add(checkUsers);
+		/*---------------*/
+		/* Menu Utilisateurs disponibles */
 
 		inviter.setEnabled(false);
 		inviter.addMenuListener(new MenuListener() {
@@ -245,46 +280,51 @@ public class MainView extends JFrame implements ActionListener {
 			}
 		});
 
-		couleur.add(rouge);
-		couleur.add(vert);
-		couleur.add(bleu);
-
-		edition.setMnemonic('E');
-		edition.add(forme);
-		edition.addSeparator();
-		edition.add(couleur);
-
-		/* check users */
-		checkUsers.addActionListener(this);
-		checkForUsers.add(checkUsers);
-		/* */
-		menuBar.add(fichier);
-		menuBar.add(checkForUsers);
-		menuBar.add(edition);
-		menuBar.add(inviter);
-
-		/* Plugin */
+		/* Menu Plugin */
+		chargerPlugin = new JMenuItem("Charger un Plugin");
 		chargerPlugin.addActionListener(this);
 		plugin.add(chargerPlugin);
-		menuBar.add(plugin);
-		/*	*/
-		aboutFrame.addActionListener(this);
-		help.add(aboutFrame);
-		/* Inviter */
+		/*-------------*/
+		/* Menu Attente invitation */
+		attendre = new JMenuItem("Attendre une Invitation");
 		attendre.addActionListener(this);
 		invitation.add(attendre);
+		/*------------*/
+		/* Menu About */
+		aboutFrame = new JMenuItem("A propos de nous");
+		aboutFrame.addActionListener(this);
+		help.add(aboutFrame);
+		/*------------*/
+
+		/* Ajout des menu dans le menubar */
+		menuBar.add(fichier);
+		menuBar.add(edition);
+		menuBar.add(checkForUsers);
+		menuBar.add(inviter);
+		menuBar.add(plugin);
 		menuBar.add(invitation);
-		/*	*/
 		menuBar.add(help);
 
-		this.setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 	}
 
-	// Initialise la barre d'outils
 	private void initToolBar() {
+
+		/* Forme pointeur */
+		square = new JButton("Square");
+		circle = new JButton("Cercle");
 
 		square.addActionListener(this);
 		circle.addActionListener(this);
+		/* Couleur */
+		red = new JButton("red");
+		blue = new JButton("Blue");
+		green = new JButton("green");
+
+		red.setBackground(Color.RED);
+		blue.setBackground(Color.BLUE);
+		green.setBackground(Color.GREEN);
+
 		red.addActionListener(this);
 		green.addActionListener(this);
 		blue.addActionListener(this);
@@ -296,7 +336,7 @@ public class MainView extends JFrame implements ActionListener {
 		toolBar.add(blue);
 		toolBar.add(green);
 
-		this.getContentPane().add(toolBar, BorderLayout.NORTH);
+		getContentPane().add(toolBar, BorderLayout.NORTH);
 	}
 
 	public MainController getDrawPanel() {
@@ -346,9 +386,7 @@ public class MainView extends JFrame implements ActionListener {
 
 		/* Menu Attendre */
 		if (e.getSource().equals(attendre)) {
-			// JOptionPane.showMessageDialog(this,
-			// "Attendre invitation button.");
-			disableMenusandItems();
+
 			try {
 
 				InetAddress thisIp = InetAddress.getLocalHost();
@@ -361,18 +399,20 @@ public class MainView extends JFrame implements ActionListener {
 								null,
 								"L'attente d'une invitation est en cours.\nOk : Pour valider.\nCancel : Pour annuler.",
 								"Attente d'une invitation",
-								JOptionPane.OK_CANCEL_OPTION,
+								JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.INFORMATION_MESSAGE, null, null,
 								null);
-				if (input == JOptionPane.CANCEL_OPTION) {
+				if (input == JOptionPane.CANCEL_OPTION
+						|| input == JOptionPane.NO_OPTION) {
 					socketReception.close();
+				} else {
+					disableMenusandItems();
+
+					Reception rrReception = new Reception(this,socketReception.accept());
+					Thread treception = new Thread(rrReception);
+					treception.start();
+					JOptionPane.showMessageDialog(null, "Connexion réussie");
 				}
-
-				Socket socketR = socketReception.accept();
-				JOptionPane.showMessageDialog(new Frame(), "Connexion réussie");
-
-				Reception rrReception = new Reception(MainView.this, socketR);
-				new Thread(rrReception).start();
 			} catch (SocketException e1) {
 				System.out.println("le ServerSocket est fermer.");
 			} catch (IOException e1) {

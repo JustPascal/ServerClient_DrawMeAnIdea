@@ -51,9 +51,9 @@ public class Reception implements Runnable {
 			}
 
 		} catch (SocketException e) {
-			JOptionPane.showMessageDialog(new Frame(), socket.getInetAddress() + " s'est deconnecté");
+			JOptionPane.showMessageDialog(null, socket.getInetAddress()
+					+ " s'est deconnectÃ©");
 		} catch (IOException e) {
-
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 

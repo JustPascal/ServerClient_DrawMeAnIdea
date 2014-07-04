@@ -39,7 +39,8 @@ public class AboutFrame extends JDialog implements ActionListener {
 
 		final JPanel containerPanel = new JPanel(new BorderLayout());
 
-		final JLabel appliName = new JLabel(APPLI_NAME, new ImageIcon("src/Logo-empoule.png"), SwingConstants.CENTER);
+		final JLabel appliName = new JLabel(APPLI_NAME, new ImageIcon(
+				"images/Logo-empoule.png"), SwingConstants.CENTER);
 		final JLabel appliInfo = new JLabel(
 				"<html>Draw me an Idea est une application de dessin en temps r�elle cr�e par Yossi Attia et Pascal Niyitegeka.</html>",
 				SwingConstants.CENTER);
@@ -72,7 +73,8 @@ public class AboutFrame extends JDialog implements ActionListener {
 	private void centerLocation() {
 		final Dimension dim = getToolkit().getScreenSize();
 		final Rectangle bounds = getBounds();
-		setLocation((dim.width - bounds.width) / 2, (dim.height - bounds.width) / 2);
+		setLocation((dim.width - bounds.width) / 2,
+				(dim.height - bounds.width) / 2);
 	}
 
 	@Override
