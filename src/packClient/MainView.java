@@ -1,4 +1,4 @@
-package packClient;
+﻿package packClient;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,8 +6,6 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -27,13 +25,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import com.aboutframe.AboutFrame;
 import com.pluginloader.PluginLoader;
-import com.saveimage.SaveImage;
+import com.tools.MainViewWindowListener;
+import com.tools.SaveImage;
 
-public class MainView extends JFrame implements WindowListener, ActionListener {
+public class MainView extends JFrame implements ActionListener {
 
 	/**
 	 * 
@@ -45,25 +47,31 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 	// LE MENU
 	private final JMenuBar menuBar = new JMenuBar();
 
-	JMenu fichier = new JMenu("Fichier");
+	private JMenu fichier = new JMenu("Fichier");
 
-	JMenu edition = new JMenu("Edition");
+	private JMenu edition = new JMenu("Edition");
 
-	JMenu checkForUsers = new JMenu("Check Users");
+	private JMenu checkForUsers = new JMenu("Check Users");
 
-	JMenu inviter = new JMenu("Utilisateurs disponible");
+	private JMenu inviter = new JMenu("Utilisateurs disponible");
 
-	JMenu forme = new JMenu("Forme du pointeur");
+	private JMenu forme = new JMenu("Forme du pointeur");
 
-	JMenu couleur = new JMenu("Couleur du pointeur");
+	private JMenu couleur = new JMenu("Couleur du pointeur");
 
 	/* Menu et menu Item du plugin */
 
-	JMenu plugin = new JMenu("Plugin");
+	private JMenu plugin = new JMenu("Plugin");
 
 	JMenuItem chargerPlugin = new JMenuItem("Charger un Plugin");
 
 	/* -- -- -- */
+
+	JMenu help = new JMenu("?");
+
+	private JMenu invitation = new JMenu("Invitation");
+
+	JMenuItem aboutFrame = new JMenuItem("A propos de nous");
 
 	JMenuItem nouveau = new JMenuItem("Effacer");
 
@@ -73,15 +81,15 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 	JMenuItem checkUsers = new JMenuItem("recent users");
 
-	JMenuItem rond = new JMenuItem("Rond");
+	JMenuItem rond = new JMenuItem("Circle");
 
-	static JMenuItem carre = new JMenuItem("Carr�");
+	static JMenuItem carre = new JMenuItem("Square");
 
-	static JMenuItem bleu = new JMenuItem("Bleu");
+	static JMenuItem bleu = new JMenuItem("Blue");
 
-	JMenuItem rouge = new JMenuItem("Rouge");
+	JMenuItem rouge = new JMenuItem("Red");
 
-	static JMenuItem vert = new JMenuItem("Vert");
+	static JMenuItem vert = new JMenuItem("Green");
 
 	// LA BARRE D'OUTILS
 	JToolBar toolBar = new JToolBar();
@@ -104,7 +112,8 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 	public List<InetAddress> ipClients = new ArrayList<InetAddress>();
 
 	public ServerSocket socketReception = null;
-	public JButton bouton2 = new JButton("Attendre une Invitation");
+
+	private JMenuItem attendre = new JMenuItem("Attendre une Invitation");
 
 	public List<InetAddress> getIpClients() {
 		return ipClients;
@@ -116,11 +125,17 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 	// Constructeur
 	public MainView() {
+
 		logger.info("[BEGIN] MainView()");
 
+		try {
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
+		} catch (Exception e) {
+			e.getMessage();
+		}
 		this.setSize(700, 500);
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		// On initialise le menu
 		this.initMenu();
 		// Idem pour la barre d'outils
@@ -128,7 +143,11 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 		// On positionne notre zone de dessin
 		this.getContentPane().add(getDrawPanel(), BorderLayout.CENTER);
 		this.setVisible(true);
-
+		/* WindowListenner */
+		MainViewWindowListener mainViewWindowListenner = new MainViewWindowListener(
+				this);
+		this.addWindowListener(mainViewWindowListenner);
+		/*				*/
 		logger.info("[END] MainView()");
 	}
 
@@ -137,24 +156,11 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 		red.setBackground(Color.RED);
 		blue.setBackground(Color.BLUE);
 		green.setBackground(Color.GREEN);
-		nouveau.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-				mcController.erase();
-
-			}
-		});
-
+		nouveau.addActionListener(this);
 		nouveau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
 				KeyEvent.CTRL_DOWN_MASK));
 
-		quitter.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
+		quitter.addActionListener(this);
 		quitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
 				KeyEvent.CTRL_DOWN_MASK));
 
@@ -166,39 +172,15 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 		fichier.add(quitter);
 		fichier.setMnemonic('F');
 
-		carre.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mcController.switchForme(e);
-			}
-		});
-		rond.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mcController.switchForme(e);
-			}
-		});
+		carre.addActionListener(this);
+		rond.addActionListener(this);
 		forme.add(rond);
 		forme.add(carre);
 
-		rouge.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mcController.switchCouleur(e);
-			}
-		});
-		vert.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mcController.switchCouleur(e);
-			}
-		});
-		bleu.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mcController.switchCouleur(e);
-			}
-		});
+		rouge.addActionListener(this);
+		vert.addActionListener(this);
+		bleu.addActionListener(this);
+
 		inviter.setEnabled(false);
 		inviter.addMenuListener(new MenuListener() {
 
@@ -218,6 +200,7 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 							final JButton button = new JButton("adresse : "
 									+ ipInvite.toString());
 							button.addActionListener(new ActionListener() {
+								@SuppressWarnings("deprecation")
 								@Override
 								public void actionPerformed(ActionEvent e) {
 
@@ -232,10 +215,8 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 										JOptionPane.showMessageDialog(
 												new Frame(),
 												"Connexion réussie");
-										// menuBar.remove(inviter);
-
 										inviter.setEnabled(false);
-										bouton2.setEnabled(false);
+										invitation.setEnabled(false);
 
 										getDrawPanel().setRecepteur(false);
 									}
@@ -264,55 +245,6 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 			}
 		});
 
-		// final JButton bouton2 = new JButton("Attendre une Invitation");
-		bouton2.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-
-					InetAddress thisIp = InetAddress.getLocalHost();
-					System.out.println(thisIp);
-
-					socketReception = new ServerSocket(4184, 1, thisIp);
-
-					int input = JOptionPane
-							.showOptionDialog(
-									null,
-									"L'attente d'une invitation est en cours.\nOk : Pour valider.\nCancel : Pour annuler.",
-									"Attente d'une invitation",
-									JOptionPane.OK_CANCEL_OPTION,
-									JOptionPane.INFORMATION_MESSAGE, null,
-									null, null);
-					if (input == JOptionPane.CANCEL_OPTION) {
-						socketReception.close();
-					}
-
-					Socket socketR = new Socket();
-					socketR = socketReception.accept();
-					JOptionPane.showMessageDialog(new Frame(),
-							"Connexion réussie");
-
-					inviter.setEnabled(false);
-					bouton2.setEnabled(false);
-					plugin.setEnabled(false);
-					edition.setEnabled(false);
-					nouveau.setEnabled(false);
-					checkForUsers.setEnabled(false);
-
-					Reception rrReception = new Reception(MainView.this,
-							socketR);
-					new Thread(rrReception).start();
-				} catch (SocketException e1) {
-					System.out.println("le ServerSocket est referm�");
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-
-			}
-		});
-
 		couleur.add(rouge);
 		couleur.add(vert);
 		couleur.add(bleu);
@@ -335,8 +267,15 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 		chargerPlugin.addActionListener(this);
 		plugin.add(chargerPlugin);
 		menuBar.add(plugin);
-
-		menuBar.add(bouton2);
+		/*	*/
+		aboutFrame.addActionListener(this);
+		help.add(aboutFrame);
+		/* Inviter */
+		attendre.addActionListener(this);
+		invitation.add(attendre);
+		menuBar.add(invitation);
+		/*	*/
+		menuBar.add(help);
 
 		this.setJMenuBar(menuBar);
 	}
@@ -344,40 +283,14 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 	// Initialise la barre d'outils
 	private void initToolBar() {
 
-		square.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mcController.switchForme(e);
-			}
-		});
-		circle.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mcController.switchForme(e);
-			}
-		});
-		red.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mcController.switchCouleur(e);
-			}
-		});
-		green.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mcController.switchCouleur(e);
-			}
-		});
-		blue.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mcController.switchCouleur(e);
-			}
-		});
+		square.addActionListener(this);
+		circle.addActionListener(this);
+		red.addActionListener(this);
+		green.addActionListener(this);
+		blue.addActionListener(this);
 
 		toolBar.add(square);
 		toolBar.add(circle);
-
 		toolBar.addSeparator();
 		toolBar.add(red);
 		toolBar.add(blue);
@@ -394,41 +307,6 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 
 	public void setMainController(MainController mcController) {
 		this.mcController = mcController;
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		this.setLaunched(false);
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-
 	}
 
 	public boolean isLaunched() {
@@ -451,18 +329,100 @@ public class MainView extends JFrame implements WindowListener, ActionListener {
 		}
 
 		if (e.getSource().equals(checkUsers)) {
-			if (ipClients.size() == 1) {
-				inviter.setEnabled(false);
-			} else {
-				inviter.setEnabled(true);
-			}
+
+			final boolean hasOneClient = ipClients.size() == 1;
+			inviter.setEnabled(!hasOneClient);
 		}
-		
-		if(e.getSource().equals(sauvegarde)){
+
+		if (e.getSource().equals(sauvegarde)) {
 			SaveImage saveImage = new SaveImage(this);
 			saveImage.save();
 		}
-			
+
+		if (e.getSource().equals(aboutFrame)) {
+			AboutFrame aboutFrame = new AboutFrame();
+			aboutFrame.setVisible(true);
+		}
+
+		/* Menu Attendre */
+		if (e.getSource().equals(attendre)) {
+			// JOptionPane.showMessageDialog(this,
+			// "Attendre invitation button.");
+			disableMenusandItems();
+			try {
+
+				InetAddress thisIp = InetAddress.getLocalHost();
+				System.out.println(thisIp);
+
+				socketReception = new ServerSocket(4184, 1, thisIp);
+
+				int input = JOptionPane
+						.showOptionDialog(
+								null,
+								"L'attente d'une invitation est en cours.\nOk : Pour valider.\nCancel : Pour annuler.",
+								"Attente d'une invitation",
+								JOptionPane.OK_CANCEL_OPTION,
+								JOptionPane.INFORMATION_MESSAGE, null, null,
+								null);
+				if (input == JOptionPane.CANCEL_OPTION) {
+					socketReception.close();
+				}
+
+				Socket socketR = socketReception.accept();
+				JOptionPane.showMessageDialog(new Frame(), "Connexion réussie");
+
+				Reception rrReception = new Reception(MainView.this, socketR);
+				new Thread(rrReception).start();
+			} catch (SocketException e1) {
+				System.out.println("le ServerSocket est fermer.");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+
+		/* Couleur */
+		if (e.getSource().equals(rouge) || e.getSource().equals(red)) {
+			mcController.setPointerColor(Color.red);
+		}
+
+		if (e.getSource().equals(vert) || e.getSource().equals(green)) {
+			mcController.setPointerColor(Color.green);
+		}
+
+		if (e.getSource().equals(bleu) || e.getSource().equals(blue)) {
+			mcController.setPointerColor(Color.blue);
+		}
+		/* Forme */
+		if (e.getSource().equals(rond) || e.getSource().equals(circle)) {
+			mcController.setPointerType("CIRCLE");
+		}
+		if (e.getSource().equals(carre) || e.getSource().equals(square)) {
+			mcController.setPointerType("SQUARE");
+			;
+		}
+		/* fermeture de la fenetre */
+		if (e.getSource().equals(quitter)) {
+			JOptionPane.showMessageDialog(this, "Vous quittez l'aplication");
+			System.exit(0);
+		}
+		/* Nouveau fichier */
+		if (e.getSource().equals(nouveau)) {
+			JOptionPane.showMessageDialog(this,
+					"Vous allez effacer tout pour recommencer.");
+			mcController.erase();
+		}
 	}
 
+	public void disableMenusandItems() {
+		inviter.setEnabled(false);
+		invitation.setEnabled(false);
+		plugin.setEnabled(false);
+		edition.setEnabled(false);
+		nouveau.setEnabled(false);
+		checkForUsers.setEnabled(false);
+	}
+
+	public void disablePlugin() {
+		plugin.setEnabled(false);
+	}
 }

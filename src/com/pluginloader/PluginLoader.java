@@ -74,7 +74,7 @@ public class PluginLoader {
 				System.out.println("No such Method Exception : "
 						+ e1.getMessage());
 			}
-
+			mainView.disablePlugin();
 		}
 	}
 }

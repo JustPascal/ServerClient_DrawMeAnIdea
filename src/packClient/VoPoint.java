@@ -25,7 +25,6 @@ public class VoPoint implements Serializable {
 	// Type de point
 	private String type = "CIRCLE";
 
-	// Constructeur par d�faut
 	public VoPoint() {
 	}
 
@@ -86,9 +85,8 @@ public class VoPoint implements Serializable {
 		if (this.getX() == point.getX())
 			if (this.getY() == point.getY())
 				if (this.getColor() == point.getColor())
-					// if (this.getSize() == point.getSize())
-					// if (this.getType().equals(point.getType()))
-					return true;
+					if (this.getType().equals(point.getType()))
+						return true;
 		return false;
 	}
 }

@@ -2,7 +2,6 @@ package packClient;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -76,7 +75,6 @@ public class MainController extends JPanel implements Serializable, MouseMotionL
 			System.out.println("Client recepteur non disponible");
 			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -138,45 +136,6 @@ public class MainController extends JPanel implements Serializable, MouseMotionL
 
 		ee.sendToSocketEmission(socketEmission);
 
-	}
-
-	public void switchForme(ActionEvent e) {
-
-		if (e.getSource().getClass().getName().equals("javax.swing.JMenuItem")) {
-			if (e.getSource() == MainView.carre)
-				setPointerType("SQUARE");
-			else
-				setPointerType("CIRCLE");
-		} else {
-			if (e.getSource() == MainView.square)
-				setPointerType("SQUARE");
-			else
-				setPointerType("CIRCLE");
-		}
-	}
-
-	public void switchCouleur(ActionEvent e) {
-		if (e.getSource().getClass().getName().equals("javax.swing.JMenuItem")) {
-
-			if (e.getSource() == MainView.vert)
-				setPointerColor(Color.green);
-
-			else if (e.getSource() == MainView.bleu)
-				setPointerColor(Color.blue);
-
-			else
-				setPointerColor(Color.red);
-		} else {
-
-			if (e.getSource() == MainView.green)
-				setPointerColor(Color.green);
-
-			else if (e.getSource() == MainView.blue)
-				setPointerColor(Color.blue);
-
-			else
-				setPointerColor(Color.red);
-		}
 	}
 
 	public void setPointerType(String str) {
