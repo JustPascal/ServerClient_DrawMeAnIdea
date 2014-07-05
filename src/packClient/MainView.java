@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -93,6 +95,8 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 	/* Tool Bar */
 
 	private JToolBar toolBar = new JToolBar();
+
+	private JButton save;
 
 	private JButton square;
 
@@ -244,16 +248,28 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 
 	private void initToolBar() {
 
-		/* Forme pointeur */
-		square = new JButton("Square");
-		circle = new JButton("Cercle");
+		/* Save Button */
 
+		save = new JButton(new ImageIcon(getClass().getClassLoader()
+				.getResource("resource/save.png")));
+		save.addActionListener(this);
+
+		/* Forme pointeur */
+		square = new JButton();
+		square.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+				"resource/black.png")));
+		circle = new JButton();
+		circle.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+				"resource/circle.png")));
 		square.addActionListener(this);
 		circle.addActionListener(this);
 		/* Couleur */
-		red = new JButton("red");
-		blue = new JButton("Blue");
-		green = new JButton("green");
+		red = new JButton(new ImageIcon(getClass().getClassLoader()
+				.getResource("resource/red.png")));
+		blue = new JButton(new ImageIcon(getClass().getClassLoader()
+				.getResource("resource/blue.png")));
+		green = new JButton(new ImageIcon(getClass().getClassLoader()
+				.getResource("resource/green.png")));
 
 		red.setBackground(Color.RED);
 		blue.setBackground(Color.BLUE);
@@ -263,6 +279,8 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		green.addActionListener(this);
 		blue.addActionListener(this);
 
+		toolBar.add(save);
+		toolBar.addSeparator();
 		toolBar.add(square);
 		toolBar.add(circle);
 		toolBar.addSeparator();
@@ -308,7 +326,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 			inviter.setEnabled(!hasOneClient);
 		}
 
-		if (e.getSource().equals(sauvegarde)) {
+		if (e.getSource().equals(sauvegarde) || e.getSource().equals(save)) {
 			SaveImage saveImage = new SaveImage(this);
 			saveImage.save();
 		}

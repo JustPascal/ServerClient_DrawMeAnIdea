@@ -3,10 +3,8 @@ package packClient;
 import java.awt.Frame;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
