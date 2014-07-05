@@ -12,6 +12,8 @@ public class DmaiServer {
 
 		try {
 			InetAddress thisIp = InetAddress.getLocalHost();
+			
+			new IhmServer();
 
 			System.out.println("Lancement du serveur..");
 			ss = new ServerSocket(4456, 5, thisIp);

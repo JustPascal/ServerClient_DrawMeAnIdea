@@ -35,8 +35,10 @@ public class ReceptionListUser implements Runnable {
 
 		try {
 			while (true) {
-				objectReceptionList = new ObjectInputStream(socket.getInputStream());
-				ipClients = (List<InetAddress>) objectReceptionList.readObject();
+				objectReceptionList = new ObjectInputStream(
+						socket.getInputStream());
+				ipClients = (List<InetAddress>) objectReceptionList
+						.readObject();
 				this.setIpClients(ipClients);
 
 				mvView.setIpClients(ipClients);
@@ -44,11 +46,11 @@ public class ReceptionListUser implements Runnable {
 		} catch (StreamCorruptedException e) {
 			System.out.println("streamcorruptedexecption");
 		} catch (SocketException e) {
-			JOptionPane.showMessageDialog(new Frame(), "Le serveur s'est eteint");
+			JOptionPane.showMessageDialog(new Frame(),
+					"Le serveur s'est eteint");
 			System.exit(0);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("IO Exception dans Reception List User.");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

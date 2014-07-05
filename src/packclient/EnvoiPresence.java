@@ -6,6 +6,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.JOptionPane;
+
 public class EnvoiPresence implements Runnable {
 
 	public Socket socket = null;
@@ -33,8 +35,11 @@ public class EnvoiPresence implements Runnable {
 				objectEnvoi.flush();
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane
+						.showMessageDialog(null,
+								"Le serveur viens d'être desactiver.\n l'application va s'éteindre.");
+				System.exit(0);
+
 			}
 		}
 
