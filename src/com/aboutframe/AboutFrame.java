@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import com.tools.ResourcePaths;
+
 public class AboutFrame extends JDialog implements ActionListener {
 
 	/**
@@ -39,7 +41,9 @@ public class AboutFrame extends JDialog implements ActionListener {
 
 		final JPanel containerPanel = new JPanel(new BorderLayout());
 
-		final JLabel appliName = new JLabel(APPLI_NAME, new ImageIcon(getClass().getClassLoader().getResource("resource/Logo-empoule.png")), SwingConstants.CENTER);
+		final JLabel appliName = new JLabel(APPLI_NAME, new ImageIcon(
+				getClass().getClassLoader().getResource(ResourcePaths.logo)),
+				SwingConstants.CENTER);
 		final JLabel appliInfo = new JLabel(
 				"<html>Draw me an Idea est une application de dessin en temps r�elle cr�e par Yossi Attia et Pascal Niyitegeka.</html>",
 				SwingConstants.CENTER);

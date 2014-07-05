@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,6 +34,7 @@ import javax.swing.event.MenuListener;
 import com.aboutframe.AboutFrame;
 import com.pluginloader.PluginLoader;
 import com.tools.MainViewWindowListener;
+import com.tools.ResourcePaths;
 import com.tools.SaveImage;
 
 public class MainView extends JFrame implements ActionListener, MenuListener {
@@ -48,23 +50,23 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 
 	/* Menu */
 
-	private JMenu fichier = new JMenu("Fichier");
+	private JMenu fichier;
 
-	private JMenu edition = new JMenu("Edition");
+	private JMenu edition;
 
-	private JMenu checkForUsers = new JMenu("Check Users");
+	private JMenu checkForUsers;
 
-	private JMenu inviter = new JMenu("Utilisateurs disponible");
+	private JMenu inviter;
 
-	private JMenu forme = new JMenu("Forme du pointeur");
+	private JMenu forme;
 
-	private JMenu couleur = new JMenu("Couleur du pointeur");
+	private JMenu couleur;
 
-	private JMenu plugin = new JMenu("Plugin");
+	private JMenu plugin;
 
-	private JMenu invitation = new JMenu("Invitation");
+	private JMenu invitation;
 
-	private JMenu help = new JMenu("?");
+	private JMenu help;
 
 	/* Menu Items */
 
@@ -151,6 +153,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 	// Initialise le menu
 	private void initMenu() {
 		/* Menu Fichier */
+		fichier = new JMenu("Fichier");
 		/* Nouveau */
 		nouveau = new JMenuItem("Effacer");
 		nouveau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
@@ -176,8 +179,9 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		/*---------------*/
 
 		/* Menu Edition */
-
+		edition = new JMenu("Edition");
 		/* Menu Item Forme */
+		forme = new JMenu("Forme du pointeur");
 		rond = new JMenuItem("Circle");
 		rond.addActionListener(this);
 
@@ -188,6 +192,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		forme.add(carre);
 
 		/* Menu Item Couleur */
+		couleur = new JMenu("Couleur du pointeur");
 		bleu = new JMenuItem("Blue");
 		bleu.addActionListener(this);
 
@@ -209,26 +214,33 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		/*---------------*/
 
 		/* Menu Check Users */
+		checkForUsers = new JMenu("Check Users");
 		checkUsers = new JMenuItem("recent users");
 		checkUsers.addActionListener(this);
 		checkForUsers.add(checkUsers);
 		/*---------------*/
-		/* Menu Utilisateurs disponibles */
 
+		/* Menu Utilisateurs disponibles */
+		inviter = new JMenu("Utilisateurs disponible");
 		inviter.setEnabled(false);
 		inviter.addMenuListener(this);
 
 		/* Menu Plugin */
+		plugin = new JMenu("Plugin");
 		chargerPlugin = new JMenuItem("Charger un Plugin");
 		chargerPlugin.addActionListener(this);
 		plugin.add(chargerPlugin);
 		/*-------------*/
+
 		/* Menu Attente invitation */
+		invitation = new JMenu("Invitation");
 		attendre = new JMenuItem("Attendre une Invitation");
 		attendre.addActionListener(this);
 		invitation.add(attendre);
 		/*------------*/
+
 		/* Menu About */
+		help = new JMenu("?");
 		aboutFrame = new JMenuItem("A propos de nous");
 		aboutFrame.addActionListener(this);
 		help.add(aboutFrame);
@@ -251,25 +263,25 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		/* Save Button */
 
 		save = new JButton(new ImageIcon(getClass().getClassLoader()
-				.getResource("resource/save.png")));
+				.getResource(ResourcePaths.save)));
 		save.addActionListener(this);
 
 		/* Forme pointeur */
 		square = new JButton();
 		square.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
-				"resource/black.png")));
+				ResourcePaths.square)));
 		circle = new JButton();
 		circle.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
-				"resource/circle.png")));
+				ResourcePaths.circle)));
 		square.addActionListener(this);
 		circle.addActionListener(this);
 		/* Couleur */
 		red = new JButton(new ImageIcon(getClass().getClassLoader()
-				.getResource("resource/red.png")));
+				.getResource(ResourcePaths.red)));
 		blue = new JButton(new ImageIcon(getClass().getClassLoader()
-				.getResource("resource/blue.png")));
+				.getResource(ResourcePaths.blue)));
 		green = new JButton(new ImageIcon(getClass().getClassLoader()
-				.getResource("resource/green.png")));
+				.getResource(ResourcePaths.green)));
 
 		red.setBackground(Color.RED);
 		blue.setBackground(Color.BLUE);
