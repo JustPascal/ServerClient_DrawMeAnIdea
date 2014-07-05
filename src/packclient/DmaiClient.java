@@ -1,4 +1,4 @@
-package packClient;
+package packclient;
 
 import java.awt.Frame;
 import java.io.IOException;

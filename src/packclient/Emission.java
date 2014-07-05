@@ -1,4 +1,4 @@
-package packClient;
+package packclient;
 
 import java.awt.Frame;
 import java.io.ObjectOutputStream;
@@ -42,7 +42,7 @@ public class Emission {
 			outObject.flush();
 
 		} catch (SocketException e) {
-			JOptionPane.showMessageDialog(new Frame(), socket2.getInetAddress() + " s'est deconnecté.");
+			JOptionPane.showMessageDialog(new Frame(), socket2.getInetAddress() + " s'est deconnectï¿½.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

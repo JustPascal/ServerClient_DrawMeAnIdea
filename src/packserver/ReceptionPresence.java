@@ -1,4 +1,4 @@
-package packServer;
+package packserver;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

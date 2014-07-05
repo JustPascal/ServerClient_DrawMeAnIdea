@@ -1,4 +1,4 @@
-package packClient;
+package packclient;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -106,7 +106,7 @@ public class MainController extends JPanel implements Serializable, MouseMotionL
 		} else {
 			// On parcourt notre collection de points
 			for (VoPoint p : this.points) {
-				// On récupère la couleur
+				// On rï¿½cupï¿½re la couleur
 				g.setColor(p.getColor());
 
 				// Selon le type de point

@@ -1,4 +1,4 @@
-﻿package packClient;
+﻿package packclient;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -459,6 +459,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 										"Connexion réussie");
 								inviter.setEnabled(false);
 								invitation.setEnabled(false);
+								checkForUsers.setEnabled(false);
 
 								getDrawPanel().setRecepteur(false);
 							}

@@ -5,7 +5,7 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JOptionPane;
 
-import packClient.MainView;
+import packclient.MainView;
 
 public class MainViewWindowListener implements WindowListener {
 

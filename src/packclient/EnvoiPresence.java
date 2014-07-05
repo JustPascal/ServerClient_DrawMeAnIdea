@@ -1,4 +1,4 @@
-package packClient;
+package packclient;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

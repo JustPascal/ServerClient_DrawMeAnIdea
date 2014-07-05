@@ -11,9 +11,9 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
-import packClient.MainController;
-import packClient.MainView;
-import packClient.VoPoint;
+import packclient.MainController;
+import packclient.MainView;
+import packclient.VoPoint;
 
 public class DoUndoPluginImpl implements Serializable, ActionListener {
 	/**

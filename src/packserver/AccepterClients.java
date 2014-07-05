@@ -1,4 +1,4 @@
-package packServer;
+package packserver;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -47,7 +47,7 @@ public class AccepterClients implements Runnable {
 			}
 
 		} catch (SocketException e) {
-			System.out.println("le client " + socket.getInetAddress() + " s'est déconnecté");
+			System.out.println("le client " + socket.getInetAddress() + " s'est dï¿½connectï¿½");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

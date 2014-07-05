@@ -13,7 +13,7 @@ import java.util.jar.JarFile;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import packClient.MainView;
+import packclient.MainView;
 
 public class PluginLoader {
 

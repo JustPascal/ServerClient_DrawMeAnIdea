@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import packClient.MainView;
+import packclient.MainView;
 
 public class SaveImage {
 
