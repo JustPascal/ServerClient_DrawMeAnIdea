@@ -15,24 +15,31 @@ public class DmaiClient {
 
 	private static Logger logger = Logger.getLogger(DmaiClient.class.getName());
 
-	public static void main(String[] args) {
+	MainView mainView;
 
+	public DmaiClient() {
+		this.mainView = new MainView();
+		connexionServeur();
+
+	}
+
+	public void connexionServeur() {
+
+		String serverIp = JOptionPane
+				.showInputDialog("Entrez le nom du serveur.");
 		try {
-
-			socket = new Socket("192.168.0.21.", 4456);
+			socket = new Socket(serverIp, 4456);
 			logger.info("Connexion au socket serveur.");
-			MainView mvView;
-			mvView = new MainView();
 
 			Thread t = new Thread(new EnvoiPresence(socket));
 			t.start();
 
-			Thread t2 = new Thread(new ReceptionListUser(socket, mvView));
+			Thread t2 = new Thread(new ReceptionListUser(socket, mainView));
 			t2.start();
 
 		} catch (ConnectException e) {
 			JOptionPane.showMessageDialog(new Frame(),
-					"Le serveur Draw Me An Idea n'est pas lanc�", "Erreur", 1);
+					"Le serveur Draw Me An Idea n'est pas lancé", "Erreur", 1);
 			System.exit(0);
 		} catch (UnknownHostException e) {
 

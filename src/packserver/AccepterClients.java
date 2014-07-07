@@ -47,9 +47,8 @@ public class AccepterClients implements Runnable {
 			}
 
 		} catch (SocketException e) {
-			System.out.println("le client " + socket.getInetAddress() + " s'est d�connect�");
+			System.out.println("le client " + socket.getInetAddress() + " s'est déconnecté");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

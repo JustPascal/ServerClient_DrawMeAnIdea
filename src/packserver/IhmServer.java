@@ -3,60 +3,116 @@ package packserver;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+
+import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.awt.FlowLayout;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+
 import java.awt.GridBagConstraints;
+
 import javax.swing.JButton;
+
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
-public class IhmServer extends JFrame {
+public class IhmServer extends JFrame implements ActionListener {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3904366521353382692L;
 
-	public IhmServer(){
+	private JTextField texte;
+	private JButton connect;
+	private JButton deconnect;
+
+	public IhmServer() {
 		setTitle("Serveur Draw me an idea !");
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setSize(new Dimension(300, 150));
-		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		JPanel panel = new JPanel();
-		getContentPane().add(panel);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{0, 0};
-		gbl_panel.rowHeights = new int[]{56, 63, 0};
-		gbl_panel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		panel.setLayout(gbl_panel);
-		
-		JLabel lblServeurDrawMe = new JLabel("Serveur Draw me an idée en cours d'execution.");
-		GridBagConstraints gbc_lblServeurDrawMe = new GridBagConstraints();
-		gbc_lblServeurDrawMe.insets = new Insets(0, 0, 5, 0);
-		gbc_lblServeurDrawMe.gridx = 0;
-		gbc_lblServeurDrawMe.gridy = 0;
-		panel.add(lblServeurDrawMe, gbc_lblServeurDrawMe);
-		
-		JButton btnEteindre = new JButton("Eteindre ");
-		btnEteindre.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
-		GridBagConstraints gbc_btnEteindre = new GridBagConstraints();
-		gbc_btnEteindre.gridx = 0;
-		gbc_btnEteindre.gridy = 1;
-		panel.add(btnEteindre, gbc_btnEteindre);
-		
-		
-	
+
+		/*
+		 * Form Create Serveur
+		 */
+		GridBagLayout gbl = new GridBagLayout();
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		panel.setLayout(gbl);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridwidth = 4;
+		gbc.gridheight = 1;
+		JLabel label = new JLabel("Voici l'adresse du serveur. ");
+		panel.add(label, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridwidth = 4;
+		gbc.gridheight = 1;
+		texte = new JTextField(getLocalIpAdresse());
+		texte.setEnabled(false);
+		panel.add(texte, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridwidth = 4;
+		gbc.gridheight = 1;
+		connect = new JButton("Connect");
+		connect.addActionListener(this);
+		panel.add(connect, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridwidth = 4;
+		gbc.gridheight = 1;
+		deconnect = new JButton("Deconnect");
+		deconnect.addActionListener(this);
+		panel.add(deconnect, gbc);
+
+		getContentPane().add(panel, BorderLayout.CENTER);
 		setVisible(true);
 	}
-	
+
+	private String getLocalIpAdresse() {
+		String ip = null;
+		try {
+			ip = InetAddress.getLocalHost().toString();
+		} catch (UnknownHostException e) {
+		}
+		return ip;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(connect)) {
+			StartServer server = null;
+			try {
+				server = new StartServer(InetAddress.getLocalHost());
+			} catch (UnknownHostException e1) {
+				System.out.println("Le serveur n'a pas pu démarrer.");
+			}
+			connect.setEnabled(false);
+		}
+		if (e.getSource().equals(deconnect)) {
+			JOptionPane.showMessageDialog(this, "Vous quittez le serveur.");
+			System.exit(0);
+		}
+
+	}
+
 }

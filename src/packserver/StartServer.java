@@ -4,21 +4,16 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
-public class DmaiServer {
+public class StartServer {
 
-	public static ServerSocket ss = null;
+	private ServerSocket ss = null;
 
-	public static void main(String[] args) {
-
+	public StartServer(InetAddress thisIp) {
 		try {
-			InetAddress thisIp = InetAddress.getLocalHost();
-			
-			new IhmServer();
-
 			System.out.println("Lancement du serveur..");
-			ss = new ServerSocket(4456, 5, thisIp);
+			this.ss = new ServerSocket(4456, 5, thisIp);
 			System.out.println("Le serveur est à l'ecoute du port "
-					+ ss.getLocalPort());
+					+ this.ss.getLocalPort());
 
 			Thread t = new Thread(new AccepterClients(ss));
 			t.start();
@@ -28,4 +23,5 @@ public class DmaiServer {
 		}
 
 	}
+
 }
