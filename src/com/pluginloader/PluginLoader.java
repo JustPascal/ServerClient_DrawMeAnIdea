@@ -11,6 +11,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import packclient.MainView;
@@ -52,29 +53,31 @@ public class PluginLoader {
 						Constructor<?> constructeur = c
 								.getDeclaredConstructor(mainView.getClass());
 						constructeur.newInstance(mainView);
+						mainView.disablePlugin();
 					}
 				}
 			} catch (IOException e) {
-				System.out.println("File Exception : " + e.getMessage());
+				JOptionPane.showMessageDialog(null,
+						"Le plugin n'a pas pu se charger.");
 			} catch (ClassNotFoundException e1) {
-				System.out.println("Class not found Exception : "
-						+ e1.getMessage());
+				JOptionPane.showMessageDialog(null,
+						"Le plugin n'a pas pu se charger.");
 			} catch (SecurityException e1) {
-				System.out.println("Security Exception : " + e1.getMessage());
+				JOptionPane.showMessageDialog(null,
+						"Le plugin n'a pas pu se charger.");
 			} catch (InstantiationException e1) {
-				System.out.println("Instanciation Exception : "
-						+ e1.getMessage());
+				JOptionPane.showMessageDialog(null,
+						"Le plugin n'a pas pu se charger.");
 			} catch (IllegalAccessException e1) {
-				System.out.println("Illegal Access Exception : "
-						+ e1.getMessage());
+				JOptionPane.showMessageDialog(null,
+						"Le plugin n'a pas pu se charger.");
 			} catch (InvocationTargetException e1) {
-				System.out.println("Invocation Target Exception : "
-						+ e1.getMessage());
+				JOptionPane.showMessageDialog(null,
+						"Le plugin n'a pas pu se charger.");
 			} catch (NoSuchMethodException e1) {
-				System.out.println("No such Method Exception : "
-						+ e1.getMessage());
+				JOptionPane.showMessageDialog(null,
+						"Le plugin n'a pas pu se charger.");
 			}
-			mainView.disablePlugin();
 		}
 	}
 }

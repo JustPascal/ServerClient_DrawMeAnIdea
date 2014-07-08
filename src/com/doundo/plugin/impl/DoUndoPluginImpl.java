@@ -78,6 +78,8 @@ public class DoUndoPluginImpl implements Serializable, ActionListener {
 			drawPanel.setPointsToRemove();
 			drawPanel.setPoints(points);
 			drawPanel.repaint();
+			undo.setEnabled(false);
+			redo.setEnabled(true);
 		}
 		/* Redo Event */
 		if (e.getSource().equals(redo)) {
@@ -87,6 +89,9 @@ public class DoUndoPluginImpl implements Serializable, ActionListener {
 			}
 			drawPanel.setPoints(points);
 			drawPanel.repaint();
+
+			undo.setEnabled(true);
+			redo.setEnabled(false);
 		}
 	}
 }
