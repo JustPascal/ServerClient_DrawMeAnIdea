@@ -74,12 +74,6 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 
 	private JMenuItem checkUsers;
 
-	private JMenuItem bleu;
-
-	private JMenuItem rouge;
-
-	private JMenuItem vert;
-
 	private JMenuItem attendre;
 
 	/* Tool Bar */
@@ -97,6 +91,16 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 	private JButton green;
 
 	private JButton blue;
+
+	private JButton orange;
+
+	private JButton yellow;
+
+	private JButton pink;
+
+	private JButton black;
+
+	private JButton white;
 
 	/* Zone de dessin */
 	public MainController mcController = null;
@@ -236,14 +240,34 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 				.getResource(ResourcePaths.blue)));
 		green = new JButton(new ImageIcon(getClass().getClassLoader()
 				.getResource(ResourcePaths.green)));
+		yellow = new JButton(new ImageIcon(getClass().getClassLoader()
+				.getResource(ResourcePaths.yellow)));
+		orange = new JButton(new ImageIcon(getClass().getClassLoader()
+				.getResource(ResourcePaths.orange)));
+		pink = new JButton(new ImageIcon(getClass().getClassLoader()
+				.getResource(ResourcePaths.pink)));
+		black = new JButton(new ImageIcon(getClass().getClassLoader()
+				.getResource(ResourcePaths.black)));
+		white = new JButton(new ImageIcon(getClass().getClassLoader()
+				.getResource(ResourcePaths.white)));
 
 		red.setBackground(Color.RED);
 		blue.setBackground(Color.BLUE);
 		green.setBackground(Color.GREEN);
+		yellow.setBackground(Color.YELLOW);
+		orange.setBackground(Color.ORANGE);
+		pink.setBackground(Color.PINK);
+		black.setBackground(Color.black);
+		white.setBackground(Color.white);
 
 		red.addActionListener(this);
 		green.addActionListener(this);
 		blue.addActionListener(this);
+		yellow.addActionListener(this);
+		orange.addActionListener(this);
+		pink.addActionListener(this);
+		black.addActionListener(this);
+		white.addActionListener(this);
 
 		toolBar.add(save);
 		toolBar.addSeparator();
@@ -253,6 +277,11 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		toolBar.add(red);
 		toolBar.add(blue);
 		toolBar.add(green);
+		toolBar.add(yellow);
+		toolBar.add(orange);
+		toolBar.add(pink);
+		toolBar.add(black);
+		toolBar.add(white);
 
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 	}
@@ -340,16 +369,35 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		}
 
 		/* Couleur */
-		if (e.getSource().equals(rouge) || e.getSource().equals(red)) {
+		if (e.getSource().equals(red)) {
 			mcController.setPointerColor(Color.red);
 		}
 
-		if (e.getSource().equals(vert) || e.getSource().equals(green)) {
+		if (e.getSource().equals(green)) {
 			mcController.setPointerColor(Color.green);
 		}
-
-		if (e.getSource().equals(bleu) || e.getSource().equals(blue)) {
+		if (e.getSource().equals(blue)) {
 			mcController.setPointerColor(Color.blue);
+		}
+
+		if (e.getSource().equals(yellow)) {
+			mcController.setPointerColor(Color.yellow);
+		}
+
+		if (e.getSource().equals(orange)) {
+			mcController.setPointerColor(Color.orange);
+		}
+
+		if (e.getSource().equals(pink)) {
+			mcController.setPointerColor(Color.pink);
+		}
+
+		if (e.getSource().equals(black)) {
+			mcController.setPointerColor(Color.black);
+		}
+
+		if (e.getSource().equals(white)) {
+			mcController.setPointerColor(Color.white);
 		}
 		/* Forme */
 		if (e.getSource().equals(circle)) {
