@@ -19,11 +19,14 @@ import javax.swing.SwingConstants;
 
 import com.tools.ResourcePaths;
 
+/**
+ * Class aboutFrame accessible à partir du menu "?"
+ * 
+ * @author pascal
+ * @version 1.0
+ */
 public class AboutFrame extends JDialog implements ActionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1559958482435523731L;
 
 	private static final String APPLI_NAME = "Draw Me An Idea";
@@ -32,10 +35,20 @@ public class AboutFrame extends JDialog implements ActionListener {
 
 	private JButton bClose;
 
+	/**
+	 * Constructeur permettant de lancer la création de la fênetre
+	 * "à propos de nous"
+	 * */
 	public AboutFrame() {
 		guiFactory();
 	}
 
+	/**
+	 * 
+	 * La méthode guifactory crée un panel qui sera composé de 2 labels qui
+	 * seront au nord l'info sur l'appli au milieu et un dernier panel en bas
+	 * qui contiendra le bouton pour quitter la fenêtre
+	 * */
 	private void guiFactory() {
 		final Container c = getContentPane();
 
@@ -73,6 +86,9 @@ public class AboutFrame extends JDialog implements ActionListener {
 		centerLocation();
 	}
 
+	/**
+	 * Centre le JDialog sur la fenêtre
+	 * */
 	private void centerLocation() {
 		final Dimension dim = getToolkit().getScreenSize();
 		final Rectangle bounds = getBounds();

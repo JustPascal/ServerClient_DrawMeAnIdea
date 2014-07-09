@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 public class Reception implements Runnable {
 
-	private MainController drawPanel = null;
+	private MianController mianController = null;
 	private ObjectInputStream inObject;
 	private MainView mv2 = null;
 	private Socket socket = null;
@@ -22,7 +22,7 @@ public class Reception implements Runnable {
 	 */
 	public Reception(MainView mv2, Socket socketR) {
 		this.mv2 = mv2;
-		this.drawPanel = mv2.getDrawPanel();
+		this.mianController = mv2.getDrawPanel();
 		this.socket = socketR;
 
 	}
@@ -45,8 +45,8 @@ public class Reception implements Runnable {
 
 				alPoint = (List<VoPoint>) inObject.readObject();
 
-				drawPanel.setPoints(alPoint);
-				drawPanel.repaint();
+				mianController.setPoints(alPoint);
+				mianController.repaint();
 			}
 
 		} catch (SocketException e) {

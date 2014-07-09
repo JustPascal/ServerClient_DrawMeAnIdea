@@ -9,20 +9,35 @@ import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Class permettant d'instancier la vue et la connexion au serveur.
+ * 
+ * @author yossi
+ * 
+ */
 public class DmaiClient {
 
+	/**
+	 * Socket
+	 */
 	public static Socket socket = null;
 
 	private static Logger logger = Logger.getLogger(DmaiClient.class.getName());
 
 	MainView mainView;
 
+	/**
+	 * Constructeur instanciant la vue
+	 */
 	public DmaiClient() {
 		this.mainView = new MainView();
 		connexionServeur();
 
 	}
 
+	/**
+	 * Ouverture d'un socket relier au serveur
+	 */
 	public void connexionServeur() {
 
 		String serverIp = JOptionPane

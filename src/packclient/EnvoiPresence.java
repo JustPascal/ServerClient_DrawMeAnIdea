@@ -8,12 +8,26 @@ import java.net.UnknownHostException;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Envoie La presence d'un utilisateur à un serveur
+ * 
+ * @author yossi
+ * 
+ */
 public class EnvoiPresence implements Runnable {
 
+	/**
+	 * Socket
+	 */
 	public Socket socket = null;
 	private ObjectOutputStream objectEnvoi;
 	private InetAddress localAddress;
 
+	/**
+	 * Constructeur avec en paramètre le socket
+	 * 
+	 * @param socket
+	 */
 	public EnvoiPresence(Socket socket) {
 		this.socket = socket;
 	}

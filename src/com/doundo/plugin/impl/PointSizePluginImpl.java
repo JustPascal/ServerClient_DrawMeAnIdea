@@ -1,6 +1,5 @@
 package com.doundo.plugin.impl;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
@@ -10,6 +9,13 @@ import javax.swing.JToolBar;
 
 import packclient.MainView;
 
+/**
+ * Plugin permettant d'implementer un combobox pour que l'utilisateur puisse
+ * changer la taille de son stylo
+ * 
+ * @author pascal
+ * 
+ */
 public class PointSizePluginImpl implements ActionListener {
 
 	private static Logger logger = Logger.getLogger(DoUndoPluginImpl.class
@@ -21,6 +27,12 @@ public class PointSizePluginImpl implements ActionListener {
 
 	private MainView mainview;
 
+	/**
+	 * Constructeur avec un mainview en parametre afin d'avoir accès au toolbar
+	 * et y ajouter le combobox
+	 * 
+	 * @param mainView
+	 */
 	public PointSizePluginImpl(MainView mainView) {
 		logger.info("Point Size Plugin class Charging");
 		this.mainview = mainView;

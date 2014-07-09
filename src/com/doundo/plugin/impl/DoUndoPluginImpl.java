@@ -1,6 +1,5 @@
 package com.doundo.plugin.impl;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
@@ -12,14 +11,18 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
-import packclient.MainController;
+import packclient.MianController;
 import packclient.MainView;
 import packclient.VoPoint;
 
+/**
+ * Plugin permettant de d'implementer les fonctions de defaire ou refaire une
+ * tracé sur l'application draw me an idea
+ * 
+ * @author pascal
+ * 
+ */
 public class DoUndoPluginImpl implements Serializable, ActionListener {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5632846810847890560L;
 
 	private static Logger logger = Logger.getLogger(DoUndoPluginImpl.class
@@ -27,7 +30,7 @@ public class DoUndoPluginImpl implements Serializable, ActionListener {
 
 	private JToolBar toolbar;
 
-	private MainController drawPanel;
+	private MianController mianController;
 
 	private JButton undo;
 
@@ -37,10 +40,16 @@ public class DoUndoPluginImpl implements Serializable, ActionListener {
 
 	private List<VoPoint> pointstoAddorRemove;
 
+	/**
+	 * Constructeur avec un mainview en parametre afin d'avoir acces à l'élément
+	 * toolbar pour ajouter les buttons de "undo" et "redo"
+	 * 
+	 * @param mainView
+	 */
 	public DoUndoPluginImpl(MainView mainView) {
 		logger.info("UndoRedo class Charging");
 		this.toolbar = mainView.getToolBar();
-		this.drawPanel = mainView.getDrawPanel();
+		this.mianController = mainView.getDrawPanel();
 		addButtonsToToolBar();
 		initLists();
 	}
@@ -67,9 +76,9 @@ public class DoUndoPluginImpl implements Serializable, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		/* Undo event */
 		if (e.getSource().equals(undo)) {
-			points = drawPanel.getPoints();
-			if (!(drawPanel.getPointsToRemoveorAdd().size() == 0)) {
-				pointstoAddorRemove = drawPanel.getPointsToRemoveorAdd();
+			points = mianController.getPoints();
+			if (!(mianController.getPointsToRemoveorAdd().size() == 0)) {
+				pointstoAddorRemove = mianController.getPointsToRemoveorAdd();
 			}
 			for (VoPoint removeThisPoint : pointstoAddorRemove) {
 				for (int i = 0; i < points.size(); i++) {
@@ -78,23 +87,19 @@ public class DoUndoPluginImpl implements Serializable, ActionListener {
 					}
 				}
 			}
-			drawPanel.setPointsToRemove();
-			drawPanel.setPoints(points);
-			drawPanel.repaint();
-			undo.setEnabled(false);
-			redo.setEnabled(true);
+			mianController.setPointsToRemove();
+			mianController.setPoints(points);
+			mianController.repaint();
 		}
 		/* Redo Event */
 		if (e.getSource().equals(redo)) {
-			points = drawPanel.getPoints();
+			points = mianController.getPoints();
 			for (VoPoint point : pointstoAddorRemove) {
 				points.add(point);
 			}
-			drawPanel.setPoints(points);
-			drawPanel.repaint();
+			mianController.setPoints(points);
+			mianController.repaint();
 
-			undo.setEnabled(true);
-			redo.setEnabled(false);
 		}
 	}
 }

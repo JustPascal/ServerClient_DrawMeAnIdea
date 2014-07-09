@@ -5,14 +5,20 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JOptionPane;
 
-import packclient.MainView;
-
+/**
+ * Class MainviewWindowListener qui nous permet de traiter les actions qui ont
+ * lieu sur la fenêtre
+ * 
+ * @author pascal
+ * 
+ */
 public class MainViewWindowListener implements WindowListener {
 
-	private MainView mainView;
-
-	public MainViewWindowListener(MainView mainview) {
-		this.mainView = mainview;
+	/**
+	 * Constructeur qui prend en paramètre le mainView
+	 * 
+	 */
+	public MainViewWindowListener() {
 	}
 
 	@Override
@@ -21,15 +27,15 @@ public class MainViewWindowListener implements WindowListener {
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		JOptionPane.showMessageDialog(mainView, "Launched False");
-		mainView.setLaunched(false);
 	}
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		int rep = JOptionPane.showConfirmDialog(null, "Veux tu quitter l'application ?");
-		if (rep == 0)
+		int rep = JOptionPane.showConfirmDialog(null,
+				"Veux tu quitter l'application ?");
+		if (rep == 0) {
 			System.exit(0);
+		}
 	}
 
 	@Override

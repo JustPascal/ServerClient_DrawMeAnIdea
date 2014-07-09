@@ -16,7 +16,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-public class MainController extends JPanel implements Serializable,
+public class MianController extends JPanel implements Serializable,
 		MouseMotionListener, MouseListener {
 
 	/**
@@ -28,7 +28,6 @@ public class MainController extends JPanel implements Serializable,
 
 	private Color pointerColor = Color.red;
 
-	// Position X du pointeur
 	private int posX = -10, oldX = -10;
 
 	// Position Y du pointeur
@@ -91,7 +90,7 @@ public class MainController extends JPanel implements Serializable,
 		this.recepteur = recepteur;
 	}
 
-	public MainController() {
+	public MianController() {
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 
@@ -148,15 +147,6 @@ public class MainController extends JPanel implements Serializable,
 
 	public void setPointerColor(Color c) {
 		this.pointerColor = c;
-	}
-
-	@Override
-	public String toString() {
-		return "DrawPanel [pointerColor=" + pointerColor + ", pointerType="
-				+ pointerType + ", posX=" + posX + ", oldX=" + oldX + ", posY="
-				+ posY + ", oldY=" + oldY + ", erasing=" + erasing
-				+ ", pointerSize=" + pointerSize + ", points="
-				+ points.toString() + "]";
 	}
 
 	@Override

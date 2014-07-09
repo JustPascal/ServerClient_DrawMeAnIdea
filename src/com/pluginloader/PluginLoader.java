@@ -16,8 +16,20 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import packclient.MainView;
 
+/**
+ * Class permettant de charger les plugins
+ * 
+ * @author pascal
+ * 
+ */
 public class PluginLoader {
 
+	/**
+	 * Prend en parametre le MainView qui est un parametre essentiel pour lancer
+	 * les plugins developpés
+	 * 
+	 * @param mainView
+	 */
 	public PluginLoader(MainView mainView) {
 		init(mainView);
 	}

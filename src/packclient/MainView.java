@@ -103,9 +103,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 	private JButton white;
 
 	/* Zone de dessin */
-	public MainController mcController = null;
-
-	private boolean isLaunched;
+	public MianController mcController = null;
 
 	public List<InetAddress> ipClients = new ArrayList<InetAddress>();
 
@@ -124,6 +122,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 
 		logger.info("[BEGIN] MainView");
 
+		setTitle("Draw Me an Idea");
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension d = tk.getScreenSize();
 		setSize(d.width / 2, d.height / 2);
@@ -135,8 +134,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		initToolBar();
 		// On positionne notre zone de dessin
 		getContentPane().add(getDrawPanel(), BorderLayout.CENTER);
-		MainViewWindowListener mainViewWindowListenner = new MainViewWindowListener(
-				this);
+		MainViewWindowListener mainViewWindowListenner = new MainViewWindowListener();
 		addWindowListener(mainViewWindowListenner);
 		setVisible(true);
 		logger.info("[END] MainView");
@@ -286,22 +284,14 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 	}
 
-	public MainController getDrawPanel() {
+	public MianController getDrawPanel() {
 		if (mcController == null)
-			mcController = new MainController();
+			mcController = new MianController();
 		return mcController;
 	}
 
-	public void setMainController(MainController mcController) {
+	public void setMainController(MianController mcController) {
 		this.mcController = mcController;
-	}
-
-	public boolean isLaunched() {
-		return isLaunched;
-	}
-
-	public void setLaunched(boolean isLaunched) {
-		this.isLaunched = isLaunched;
 	}
 
 	public JToolBar getToolBar() {
