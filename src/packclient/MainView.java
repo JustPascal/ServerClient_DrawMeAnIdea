@@ -40,7 +40,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1653101569575262616L;
 
 	private Logger logger = Logger.getLogger(MainView.class.getName());
 
@@ -50,15 +50,9 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 
 	private JMenu fichier;
 
-	private JMenu edition;
-
 	private JMenu checkForUsers;
 
 	private JMenu inviter;
-
-	private JMenu forme;
-
-	private JMenu couleur;
 
 	private JMenu plugin;
 
@@ -77,10 +71,6 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 	private JMenuItem sauvegarde;
 
 	private JMenuItem quitter;
-
-	private JMenuItem rond;
-
-	private JMenuItem carre;
 
 	private JMenuItem checkUsers;
 
@@ -128,7 +118,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 	// Constructeur
 	public MainView() {
 
-		logger.info("[BEGIN] MainView()");
+		logger.info("[BEGIN] MainView");
 
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension d = tk.getScreenSize();
@@ -145,7 +135,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 				this);
 		addWindowListener(mainViewWindowListenner);
 		setVisible(true);
-		logger.info("[END] MainView()");
+		logger.info("[END] MainView");
 	}
 
 	// Initialise le menu
@@ -177,39 +167,6 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		/*---------------*/
 
 		/* Menu Edition */
-		edition = new JMenu("Edition");
-		/* Menu Item Forme */
-		forme = new JMenu("Forme du pointeur");
-		rond = new JMenuItem("Circle");
-		rond.addActionListener(this);
-
-		carre = new JMenuItem("Square");
-		carre.addActionListener(this);
-		/* Ajout dans le menu Forme */
-		forme.add(rond);
-		forme.add(carre);
-
-		/* Menu Item Couleur */
-		couleur = new JMenu("Couleur du pointeur");
-		bleu = new JMenuItem("Blue");
-		bleu.addActionListener(this);
-
-		rouge = new JMenuItem("Red");
-		rouge.addActionListener(this);
-
-		vert = new JMenuItem("Green");
-		vert.addActionListener(this);
-		/* Ajout dans le menu Couleur */
-		couleur.add(rouge);
-		couleur.add(vert);
-		couleur.add(bleu);
-
-		/* Ajout dans Menu Edition */
-		edition.setMnemonic('E');
-		edition.add(forme);
-		edition.addSeparator();
-		edition.add(couleur);
-		/*---------------*/
 
 		/* Menu Check Users */
 		checkForUsers = new JMenu("Check Users");
@@ -246,7 +203,6 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 
 		/* Ajout des menu dans le menubar */
 		menuBar.add(fichier);
-		menuBar.add(edition);
 		menuBar.add(checkForUsers);
 		menuBar.add(inviter);
 		menuBar.add(plugin);
@@ -396,12 +352,11 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 			mcController.setPointerColor(Color.blue);
 		}
 		/* Forme */
-		if (e.getSource().equals(rond) || e.getSource().equals(circle)) {
+		if (e.getSource().equals(circle)) {
 			mcController.setPointerType("CIRCLE");
 		}
-		if (e.getSource().equals(carre) || e.getSource().equals(square)) {
+		if (e.getSource().equals(square)) {
 			mcController.setPointerType("SQUARE");
-			;
 		}
 		/* fermeture de la fenetre */
 		if (e.getSource().equals(quitter)) {
@@ -420,7 +375,6 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		inviter.setEnabled(false);
 		invitation.setEnabled(false);
 		plugin.setEnabled(false);
-		edition.setEnabled(false);
 		nouveau.setEnabled(false);
 		checkForUsers.setEnabled(false);
 	}
