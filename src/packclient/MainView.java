@@ -327,7 +327,6 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 			try {
 
 				InetAddress thisIp = InetAddress.getLocalHost();
-				System.out.println(thisIp);
 
 				socketReception = new ServerSocket(4184, 1, thisIp);
 

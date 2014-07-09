@@ -34,7 +34,7 @@ public class MianController extends JPanel implements Serializable,
 	private int posY = -10, oldY = -10;
 
 	// Pour savoir si on doit dessiner ou non
-	private boolean erasing = true;
+	private boolean effacerDessin = true;
 
 	// Taille du pointeur
 	private int pointerSize = 15;
@@ -102,16 +102,12 @@ public class MianController extends JPanel implements Serializable,
 		g.setColor(Color.white);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-		// Si on doit effacer, on ne passe pas dans le else => pas de dessin
-		if (this.erasing) {
-			this.erasing = false;
+		if (this.effacerDessin) {
+			this.effacerDessin = false;
 		} else {
-			// On parcourt notre collection de points
 			for (VoPoint p : this.points) {
-				// On r�cup�re la couleur
 				g.setColor(p.getColor());
 
-				// Selon le type de point
 				if (p.getType().equals("SQUARE")) {
 					g.fillRect(p.getX(), p.getY(), p.getSize(), p.getSize());
 				} else {
@@ -123,7 +119,7 @@ public class MianController extends JPanel implements Serializable,
 
 	public void erase() {
 		if (recepteur == false) {
-			this.erasing = true;
+			this.effacerDessin = true;
 			this.points = Collections
 					.synchronizedList(new ArrayList<VoPoint>());
 
