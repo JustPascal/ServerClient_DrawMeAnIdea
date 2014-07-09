@@ -1,5 +1,6 @@
 package com.doundo.plugin.impl;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
@@ -21,7 +22,8 @@ public class DoUndoPluginImpl implements Serializable, ActionListener {
 	 */
 	private static final long serialVersionUID = 5632846810847890560L;
 
-	private static Logger logger = Logger.getLogger(DoUndoPluginImpl.class.getName());
+	private static Logger logger = Logger.getLogger(DoUndoPluginImpl.class
+			.getName());
 
 	private JToolBar toolbar;
 
@@ -45,7 +47,8 @@ public class DoUndoPluginImpl implements Serializable, ActionListener {
 
 	private void initLists() {
 		points = Collections.synchronizedList(new ArrayList<VoPoint>());
-		pointstoAddorRemove = Collections.synchronizedList(new ArrayList<VoPoint>());
+		pointstoAddorRemove = Collections
+				.synchronizedList(new ArrayList<VoPoint>());
 	}
 
 	private void addButtonsToToolBar() {

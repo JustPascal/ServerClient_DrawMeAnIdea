@@ -48,7 +48,7 @@ public class PluginLoader {
 					String className = jarElement.getName().substring(0,
 							jarElement.getName().length() - 6);
 					className = className.replace('/', '.');
-					if (className.contains("Impl")) {
+					if (className.contains("PluginImpl")) {
 						Class<?> c = cl.loadClass(className);
 						Constructor<?> constructeur = c
 								.getDeclaredConstructor(mainView.getClass());

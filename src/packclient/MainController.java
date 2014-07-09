@@ -16,7 +16,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-public class MainController extends JPanel implements Serializable, MouseMotionListener, MouseListener {
+public class MainController extends JPanel implements Serializable,
+		MouseMotionListener, MouseListener {
 
 	/**
 	 * 
@@ -37,13 +38,15 @@ public class MainController extends JPanel implements Serializable, MouseMotionL
 	private boolean erasing = true;
 
 	// Taille du pointeur
-	private final int pointerSize = 15;
+	private int pointerSize = 15;
 
 	// Collection de points !
-	private List<VoPoint> points = Collections.synchronizedList(new ArrayList<VoPoint>());
+	private List<VoPoint> points = Collections
+			.synchronizedList(new ArrayList<VoPoint>());
 
 	/* Points to remove */
-	private List<VoPoint> pointsToRemove = Collections.synchronizedList(new ArrayList<VoPoint>());
+	private List<VoPoint> pointsToRemove = Collections
+			.synchronizedList(new ArrayList<VoPoint>());
 
 	/* -- -- -- -- -- -- */
 	public boolean recepteur = true;
@@ -122,7 +125,8 @@ public class MainController extends JPanel implements Serializable, MouseMotionL
 	public void erase() {
 		if (recepteur == false) {
 			this.erasing = true;
-			this.points = Collections.synchronizedList(new ArrayList<VoPoint>());
+			this.points = Collections
+					.synchronizedList(new ArrayList<VoPoint>());
 
 			repaint();
 			sendToSocket();
@@ -148,8 +152,11 @@ public class MainController extends JPanel implements Serializable, MouseMotionL
 
 	@Override
 	public String toString() {
-		return "DrawPanel [pointerColor=" + pointerColor + ", pointerType=" + pointerType + ", posX=" + posX + ", oldX=" + oldX + ", posY="
-				+ posY + ", oldY=" + oldY + ", erasing=" + erasing + ", pointerSize=" + pointerSize + ", points=" + points.toString() + "]";
+		return "DrawPanel [pointerColor=" + pointerColor + ", pointerType="
+				+ pointerType + ", posX=" + posX + ", oldX=" + oldX + ", posY="
+				+ posY + ", oldY=" + oldY + ", erasing=" + erasing
+				+ ", pointerSize=" + pointerSize + ", points="
+				+ points.toString() + "]";
 	}
 
 	@Override
@@ -166,9 +173,11 @@ public class MainController extends JPanel implements Serializable, MouseMotionL
 			posX = e.getX();
 			posY = e.getY();
 
-			points.add(new VoPoint(e.getX() - (pointerSize / 2), e.getY() - (pointerSize / 2), pointerSize, pointerColor, pointerType));
+			points.add(new VoPoint(e.getX() - (pointerSize / 2), e.getY()
+					- (pointerSize / 2), pointerSize, pointerColor, pointerType));
 			setPointsToRemove(); // on efface la liste de points a effacer
-			pointsToRemove.add(new VoPoint(e.getX() - (pointerSize / 2), e.getY() - (pointerSize / 2), pointerSize, pointerColor,
+			pointsToRemove.add(new VoPoint(e.getX() - (pointerSize / 2), e
+					.getY() - (pointerSize / 2), pointerSize, pointerColor,
 					pointerType));
 
 			repaint();
@@ -210,8 +219,10 @@ public class MainController extends JPanel implements Serializable, MouseMotionL
 			oldY = posY;
 			posX = e.getX();
 			posY = e.getY();
-			points.add(new VoPoint(e.getX() - (pointerSize / 2), e.getY() - (pointerSize / 2), pointerSize, pointerColor, pointerType));
-			pointsToRemove.add(new VoPoint(e.getX() - (pointerSize / 2), e.getY() - (pointerSize / 2), pointerSize, pointerColor,
+			points.add(new VoPoint(e.getX() - (pointerSize / 2), e.getY()
+					- (pointerSize / 2), pointerSize, pointerColor, pointerType));
+			pointsToRemove.add(new VoPoint(e.getX() - (pointerSize / 2), e
+					.getY() - (pointerSize / 2), pointerSize, pointerColor,
 					pointerType));
 
 			repaint();
@@ -228,11 +239,16 @@ public class MainController extends JPanel implements Serializable, MouseMotionL
 
 	/* Recuperation des points pour le plugin */
 	public void setPointsToRemove() {
-		this.pointsToRemove = Collections.synchronizedList(new ArrayList<VoPoint>());
+		this.pointsToRemove = Collections
+				.synchronizedList(new ArrayList<VoPoint>());
 	}
 
 	public List<VoPoint> getPointsToRemoveorAdd() {
 		return pointsToRemove;
+	}
+
+	public void setPointerSize(int pointerSize) {
+		this.pointerSize = pointerSize;
 	}
 
 }

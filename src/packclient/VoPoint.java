@@ -10,19 +10,14 @@ public class VoPoint implements Serializable {
 	 */
 	private static final long serialVersionUID = -6930206511605667614L;
 
-	// Couleur du point
 	private Color color = Color.blue;
 
-	// Taille
 	private int size = 10;
 
-	// Position sur l'axe X : initialis� au dehors du conteneur
 	private int x = -10;
 
-	// Position sur l'axe Y : initialis� au dehors du conteneur
 	private int y = -10;
 
-	// Type de point
 	private String type = "CIRCLE";
 
 	public VoPoint() {
@@ -86,7 +81,8 @@ public class VoPoint implements Serializable {
 			if (this.getY() == point.getY())
 				if (this.getColor() == point.getColor())
 					if (this.getType().equals(point.getType()))
-						return true;
+						if (this.getSize() == point.getSize())
+							return true;
 		return false;
 	}
 }
