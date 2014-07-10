@@ -4,10 +4,21 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
+/**
+ * Classe permettant de démarrer le serveur le serveur
+ * 
+ * @author pascal
+ * 
+ */
 public class StartServer {
 
 	private ServerSocket ss = null;
 
+	/**
+	 * Constructeur qui demarre le serveur sur un IP définie
+	 * 
+	 * @param thisIp
+	 */
 	public StartServer(InetAddress thisIp) {
 		try {
 			System.out.println("Lancement du serveur..");

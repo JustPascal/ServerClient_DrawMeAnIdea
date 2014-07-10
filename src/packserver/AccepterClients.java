@@ -7,6 +7,10 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+/**
+ * @author yossi
+ * 
+ */
 public class AccepterClients implements Runnable {
 
 	private final ServerSocket socketserver;
@@ -35,19 +39,18 @@ public class AccepterClients implements Runnable {
 			while (true) {
 				socket = socketserver.accept();
 
-				System.out.println("Le client numéro " + nbrclient + " est connecté !");
+				System.out.println("Le client numéro " + nbrclient
+						+ " est connecté !");
 
 				nbrclient++;
 				Thread t = new Thread(new ReceptionPresence(socket, this));
 				t.start();
 
-				// Thread t2 = new Thread(new EnvoiList(socket, ipClients));
-				// t2.start();
-
 			}
 
 		} catch (SocketException e) {
-			System.out.println("le client " + socket.getInetAddress() + " s'est déconnecté");
+			System.out.println("le client " + socket.getInetAddress()
+					+ " s'est déconnecté");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

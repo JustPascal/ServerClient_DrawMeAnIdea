@@ -35,6 +35,14 @@ import com.tools.MainViewWindowListener;
 import com.tools.ResourcePaths;
 import com.tools.SaveImage;
 
+/**
+ * La classe mainview represente la fenêtre et ses elements tels que le menu et
+ * tool bar qui contient des elements permettant à l'utilisateur de naviger avec
+ * facilité
+ * 
+ * @author pascal et yossi
+ * 
+ */
 public class MainView extends JFrame implements ActionListener, MenuListener {
 
 	/**
@@ -109,15 +117,10 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 
 	public ServerSocket socketReception = null;
 
-	public List<InetAddress> getIpClients() {
-		return ipClients;
-	}
-
-	public void setIpClients(List<InetAddress> ipClients) {
-		this.ipClients = ipClients;
-	}
-
-	// Constructeur
+	/**
+	 * Constructeur permettant d'initialiser les diffèrentes elements de la
+	 * fenêtre
+	 */
 	public MainView() {
 
 		logger.info("[BEGIN] MainView");
@@ -140,7 +143,6 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		logger.info("[END] MainView");
 	}
 
-	// Initialise le menu
 	private void initMenu() {
 		/* Menu Fichier */
 		fichier = new JMenu("Fichier");
@@ -300,22 +302,22 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		// Charge un Plugin
 		if (e.getSource().equals(chargerPlugin)) {
 			new PluginLoader(this);
 		}
-
+		// verifi si il y a un utilisateur present pour activer le menu inviter
 		if (e.getSource().equals(checkUsers)) {
-
 			final boolean hasOneClient = ipClients.size() == 1;
 			inviter.setEnabled(!hasOneClient);
 		}
-
+		// Permet de sauvegarder le fichier
 		if (e.getSource().equals(sauvegarde) || e.getSource().equals(save)) {
 			SaveImage saveImage = new SaveImage(this);
 			saveImage.save();
 		}
-
+		// Appelle la class AboutFrame contenant des informations sur
+		// l'application
 		if (e.getSource().equals(aboutFrame)) {
 			AboutFrame aboutFrame = new AboutFrame();
 			aboutFrame.setVisible(true);
@@ -327,9 +329,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 			try {
 
 				InetAddress thisIp = InetAddress.getLocalHost();
-
 				socketReception = new ServerSocket(4184, 1, thisIp);
-
 				int input = JOptionPane
 						.showOptionDialog(
 								null,
@@ -346,8 +346,8 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 
 					Reception rrReception = new Reception(this,
 							socketReception.accept());
-					Thread treception = new Thread(rrReception);
-					treception.start();
+					Thread threadReception = new Thread(rrReception);
+					threadReception.start();
 					JOptionPane.showMessageDialog(null, "Connexion réussie");
 				}
 			} catch (SocketException e1) {
@@ -357,7 +357,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 			}
 		}
 
-		/* Couleur */
+		/* Changer lacouleurs d'un point */
 		if (e.getSource().equals(red)) {
 			mcController.setPointerColor(Color.red);
 		}
@@ -388,7 +388,7 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		if (e.getSource().equals(white)) {
 			mcController.setPointerColor(Color.white);
 		}
-		/* Forme */
+		/* Changer la forme d'un point */
 		if (e.getSource().equals(circle)) {
 			mcController.setPointerType("CIRCLE");
 		}
@@ -397,17 +397,25 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		}
 		/* fermeture de la fenetre */
 		if (e.getSource().equals(quitter)) {
-			JOptionPane.showMessageDialog(this, "Vous quittez l'aplication");
-			System.exit(0);
+			final int reponse = JOptionPane.showConfirmDialog(this,
+					"Voulez vous vraiment quittez l'aplication?");
+			if (reponse == JOptionPane.YES_OPTION) {
+				System.exit(0);
+			}
 		}
 		/* Nouveau fichier */
 		if (e.getSource().equals(nouveau)) {
-			JOptionPane.showMessageDialog(this,
-					"Vous allez effacer tout pour recommencer.");
-			mcController.erase();
+			final int reponse = JOptionPane.showConfirmDialog(this,
+					"Etes vous sur de vouloir faire un nouveau dessin ?");
+			if (reponse == JOptionPane.YES_OPTION) {
+				mcController.erase();
+			}
 		}
 	}
 
+	/**
+	 * Desactive l'ensemble du menu lorsqu'un utilisateur accepte une invitation
+	 * */
 	public void disableMenusandItems() {
 		inviter.setEnabled(false);
 		invitation.setEnabled(false);
@@ -416,8 +424,19 @@ public class MainView extends JFrame implements ActionListener, MenuListener {
 		checkForUsers.setEnabled(false);
 	}
 
+	/**
+	 * Desactive le bouton de plugin après le chargement d'un plugin
+	 * */
 	public void disablePlugin() {
 		plugin.setEnabled(false);
+	}
+
+	public List<InetAddress> getIpClients() {
+		return ipClients;
+	}
+
+	public void setIpClients(List<InetAddress> ipClients) {
+		this.ipClients = ipClients;
 	}
 
 	@Override

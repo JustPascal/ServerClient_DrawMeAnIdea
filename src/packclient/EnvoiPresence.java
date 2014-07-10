@@ -16,9 +16,6 @@ import javax.swing.JOptionPane;
  */
 public class EnvoiPresence implements Runnable {
 
-	/**
-	 * Socket
-	 */
 	public Socket socket = null;
 	private ObjectOutputStream objectEnvoi;
 	private InetAddress localAddress;

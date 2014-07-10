@@ -6,9 +6,7 @@ import javax.swing.JFrame;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
-import java.awt.FlowLayout;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -17,12 +15,17 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JButton;
 
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * Ihm permettant dedémarrer et eteindre le serveur
+ * 
+ * @author pascal et yossi
+ * 
+ */
 public class IhmServer extends JFrame implements ActionListener {
 
 	/**
@@ -34,6 +37,9 @@ public class IhmServer extends JFrame implements ActionListener {
 	private JButton connect;
 	private JButton deconnect;
 
+	/**
+	 * Lance l'initialisation des elements de l'IHM
+	 * */
 	public IhmServer() {
 		setTitle("Serveur Draw me an idea !");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,16 +106,14 @@ public class IhmServer extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(connect)) {
-			StartServer server = null;
 			try {
-				server = new StartServer(InetAddress.getLocalHost());
+				new StartServer(InetAddress.getLocalHost());
 			} catch (UnknownHostException e1) {
 				System.out.println("Le serveur n'a pas pu démarrer.");
 			}
 			connect.setEnabled(false);
 		}
 		if (e.getSource().equals(deconnect)) {
-			JOptionPane.showMessageDialog(this, "Vous quittez le serveur.");
 			System.exit(0);
 		}
 

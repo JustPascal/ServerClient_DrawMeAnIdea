@@ -8,6 +8,10 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+/**
+ * @author yossi
+ * 
+ */
 public class ReceptionPresence implements Runnable {
 
 	public Socket socket;
@@ -18,6 +22,11 @@ public class ReceptionPresence implements Runnable {
 
 	private static ObjectOutputStream outObjectList = null;
 
+	/**
+	 * 
+	 * @param socket
+	 * @param accepterClients
+	 */
 	public ReceptionPresence(Socket socket, AccepterClients accepterClients) {
 		this.socket = socket;
 		this.accepterClients = accepterClients;

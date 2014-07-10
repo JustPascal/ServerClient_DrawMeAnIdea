@@ -68,6 +68,7 @@ public class DoUndoPluginImpl implements Serializable, ActionListener {
 		redo = new JButton("redo");
 		redo.addActionListener(this);
 		/* Adding to tool bar */
+		toolbar.addSeparator();
 		toolbar.add(undo);
 		toolbar.add(redo);
 	}

@@ -13,6 +13,13 @@ import java.util.List;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
+/**
+ * Class permettant à un utilisateur de recuperer la liste de tous les
+ * utilisateurs qui s'est sont connecté aux serveur
+ * 
+ * @author yossi
+ * 
+ */
 public class ReceptionListUser implements Runnable {
 
 	public Socket socket = null;
@@ -21,6 +28,12 @@ public class ReceptionListUser implements Runnable {
 	public JMenu inviter;
 	public MainView mvView;
 
+	/**
+	 * Constructer avec en parametre le Socket et le mainView
+	 * 
+	 * @param socket
+	 * @param mvView
+	 */
 	public ReceptionListUser(Socket socket, MainView mvView) {
 		this.socket = socket;
 		this.mvView = mvView;
@@ -52,7 +65,6 @@ public class ReceptionListUser implements Runnable {
 		} catch (IOException e) {
 			System.out.println("IO Exception dans Reception List User.");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

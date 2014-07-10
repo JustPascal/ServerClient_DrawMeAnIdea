@@ -16,6 +16,12 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+/**
+ * MainController est un panel sur lequel un utilisateur fera son dessin
+ * 
+ * @author pascal et yossi
+ * 
+ */
 public class MianController extends JPanel implements Serializable,
 		MouseMotionListener, MouseListener {
 
@@ -28,31 +34,162 @@ public class MianController extends JPanel implements Serializable,
 
 	private Color pointerColor = Color.red;
 
-	private int posX = -10, oldX = -10;
-
-	// Position Y du pointeur
-	private int posY = -10, oldY = -10;
-
-	// Pour savoir si on doit dessiner ou non
 	private boolean effacerDessin = true;
 
-	// Taille du pointeur
 	private int pointerSize = 15;
 
-	// Collection de points !
 	private List<VoPoint> points = Collections
 			.synchronizedList(new ArrayList<VoPoint>());
 
 	/* Points to remove */
 	private List<VoPoint> pointsToRemove = Collections
 			.synchronizedList(new ArrayList<VoPoint>());
-
 	/* -- -- -- -- -- -- */
 	public boolean recepteur = true;
 
 	public InetAddress ipRecepteur = null;
 
 	public Socket socketEmission = null;
+
+	/**
+	 * Constructeur permettant d'initialiser le panel de dessin
+	 * */
+	public MianController() {
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
+
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+
+		g.setColor(Color.white);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+		if (this.effacerDessin) {
+			this.effacerDessin = false;
+		} else {
+			for (VoPoint p : this.points) {
+				g.setColor(p.getColor());
+
+				if (p.getType().equals("SQUARE")) {
+					g.fillRect(p.getX(), p.getY(), p.getSize(), p.getSize());
+				} else {
+					g.fillOval(p.getX(), p.getY(), p.getSize(), p.getSize());
+				}
+			}
+		}
+	}
+
+	/**
+	 * fonction permettant d'effacer le contenu du panel dessin ainsi que les
+	 * points qui sont envoyés vers un utilisateur récepteur
+	 * */
+	public void erase() {
+		if (recepteur == false) {
+			this.effacerDessin = true;
+			this.points = Collections
+					.synchronizedList(new ArrayList<VoPoint>());
+
+			repaint();
+			sendToSocket();
+		}
+
+	}
+
+	private void sendToSocket() {
+
+		Emission ee = new Emission(points, ipRecepteur);
+
+		ee.sendToSocketEmission(socketEmission);
+
+	}
+
+	public void setPointerType(String str) {
+		this.pointerType = str;
+	}
+
+	public void setPointerColor(Color c) {
+		this.pointerColor = c;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (recepteur == false) {
+			points.add(new VoPoint(e.getX() - (pointerSize / 2), e.getY()
+					- (pointerSize / 2), pointerSize, pointerColor, pointerType));
+			setPointsToRemove(); // on efface la liste de points a effacer
+			pointsToRemove.add(new VoPoint(e.getX() - (pointerSize / 2), e
+					.getY() - (pointerSize / 2), pointerSize, pointerColor,
+					pointerType));
+
+			repaint();
+			sendToSocket();
+		}
+
+	}
+
+	public List<VoPoint> getPoints() {
+		return points;
+	}
+
+	public void setPoints(List<VoPoint> points) {
+		this.points = points;
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if (recepteur == false) {
+			points.add(new VoPoint(e.getX() - (pointerSize / 2), e.getY()
+					- (pointerSize / 2), pointerSize, pointerColor, pointerType));
+			pointsToRemove.add(new VoPoint(e.getX() - (pointerSize / 2), e
+					.getY() - (pointerSize / 2), pointerSize, pointerColor,
+					pointerType));
+
+			repaint();
+			sendToSocket();
+		}
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+
+	}
+
+	/* Recuperation des points pour le plugin */
+	public void setPointsToRemove() {
+		this.pointsToRemove = Collections
+				.synchronizedList(new ArrayList<VoPoint>());
+	}
+
+	public List<VoPoint> getPointsToRemoveorAdd() {
+		return pointsToRemove;
+	}
+
+	public void setPointerSize(int pointerSize) {
+		this.pointerSize = pointerSize;
+	}
 
 	public Socket getSocketEmission() {
 		return socketEmission;
@@ -88,153 +225,6 @@ public class MianController extends JPanel implements Serializable,
 
 	public void setRecepteur(boolean recepteur) {
 		this.recepteur = recepteur;
-	}
-
-	public MianController() {
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
-
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-
-		g.setColor(Color.white);
-		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-
-		if (this.effacerDessin) {
-			this.effacerDessin = false;
-		} else {
-			for (VoPoint p : this.points) {
-				g.setColor(p.getColor());
-
-				if (p.getType().equals("SQUARE")) {
-					g.fillRect(p.getX(), p.getY(), p.getSize(), p.getSize());
-				} else {
-					g.fillOval(p.getX(), p.getY(), p.getSize(), p.getSize());
-				}
-			}
-		}
-	}
-
-	public void erase() {
-		if (recepteur == false) {
-			this.effacerDessin = true;
-			this.points = Collections
-					.synchronizedList(new ArrayList<VoPoint>());
-
-			repaint();
-			sendToSocket();
-		}
-
-	}
-
-	private void sendToSocket() {
-
-		Emission ee = new Emission(points, ipRecepteur);
-
-		ee.sendToSocketEmission(socketEmission);
-
-	}
-
-	public void setPointerType(String str) {
-		this.pointerType = str;
-	}
-
-	public void setPointerColor(Color c) {
-		this.pointerColor = c;
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if (recepteur == false) {
-			oldX = posX;
-			oldY = posY;
-			posX = e.getX();
-			posY = e.getY();
-
-			points.add(new VoPoint(e.getX() - (pointerSize / 2), e.getY()
-					- (pointerSize / 2), pointerSize, pointerColor, pointerType));
-			setPointsToRemove(); // on efface la liste de points a effacer
-			pointsToRemove.add(new VoPoint(e.getX() - (pointerSize / 2), e
-					.getY() - (pointerSize / 2), pointerSize, pointerColor,
-					pointerType));
-
-			repaint();
-			sendToSocket();
-		}
-
-	}
-
-	public List<VoPoint> getPoints() {
-		return points;
-	}
-
-	public void setPoints(List<VoPoint> points) {
-		this.points = points;
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		if (recepteur == false) {
-			oldX = posX;
-			oldY = posY;
-			posX = e.getX();
-			posY = e.getY();
-			points.add(new VoPoint(e.getX() - (pointerSize / 2), e.getY()
-					- (pointerSize / 2), pointerSize, pointerColor, pointerType));
-			pointsToRemove.add(new VoPoint(e.getX() - (pointerSize / 2), e
-					.getY() - (pointerSize / 2), pointerSize, pointerColor,
-					pointerType));
-
-			repaint();
-			sendToSocket();
-		}
-
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* Recuperation des points pour le plugin */
-	public void setPointsToRemove() {
-		this.pointsToRemove = Collections
-				.synchronizedList(new ArrayList<VoPoint>());
-	}
-
-	public List<VoPoint> getPointsToRemoveorAdd() {
-		return pointsToRemove;
-	}
-
-	public void setPointerSize(int pointerSize) {
-		this.pointerSize = pointerSize;
 	}
 
 }
