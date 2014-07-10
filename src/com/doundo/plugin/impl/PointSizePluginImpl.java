@@ -38,9 +38,7 @@ public class PointSizePluginImpl implements ActionListener {
 		this.mainview = mainView;
 		this.toolbar = mainView.getToolBar();
 		initDotLineSize();
-		toolbar.addSeparator();
 		toolbar.add(pointSize);
-		toolbar.addSeparator();
 	}
 
 	private void initDotLineSize() {
